@@ -31,7 +31,7 @@ export default function PostIndex(props) {
 	`;
 }
 
-function createAddPostListener() {
+function createPostListener() {
 	console.log("adding post listener")
 	$("#newPostButton").click(function () {
 		const title = $("#newPostTitle").val();
@@ -124,7 +124,7 @@ function editPostListener() {
 }
 
 export function PostsEvent() {
-	createAddPostListener();
+	createPostListener();
 	deletePostListener();
 	editPostListener();
 }

@@ -1,6 +1,5 @@
 package com.example.restblog.web;
 
-import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
 
@@ -13,7 +12,7 @@ import static com.example.restblog.data.User.Role.USER;
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/users", headers = "Accept=application/json")
-public class UserController {
+public class UsersController {
         Date date = new Date();
 
     @GetMapping
@@ -41,6 +40,29 @@ public class UserController {
     @DeleteMapping("{id}")
     private void deleteUser(@PathVariable Long id) {
         System.out.println("Deleted user with id# " + id);
+    }
+
+    @GetMapping("/username/{username}")
+    private User getByUsername(@PathVariable String username) {
+        return new User(1, username, "email@.com", "password", date, USER);
+    }
+
+    @GetMapping("/email/{email}")
+    private User geyByEmail(@PathVariable String email) {
+        return new User(1, "username", email, "password", date, USER);
+    }
+
+    @GetMapping("{id}/updatePassword")
+    private void updatePassword(@PathVariable Long id, @RequestParam(required = false) String oldPassword, @RequestParam String newPassword) {
+        User user1 = new User(1, "username", "email", "password", date, USER);
+        if (oldPassword.equalsIgnoreCase(user1.getPassword())) {
+            System.out.println("Password changed");
+            user1.setPassword(newPassword);
+            System.out.println(user1.getPassword() + " is your new password");
+            System.out.println(user1);
+        } else {
+            System.out.println("Wrong Password");
+        }
     }
 
 }
