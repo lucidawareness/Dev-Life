@@ -10,17 +10,20 @@ export default function Register(props) {
             <title>Register</title>
         </head>
         <body>
-        <h1>Register</h1>
 
-        <form id="register-form">
-            <label for="username">Username</label>
-            <input id="username" name="username" type="text"/>
-            <label for="email">Email</label>
-            <input id="email" name="email" type="email">
-            <label for="password">Password</label>
-            <input id="password" name="password" type="password"/>
-            <button id="register-btn" type="button">Register</button>
-        </form>
+        <div id="form-holder">
+            <h1>Register</h1>
+
+            <form id="register-form">
+                <label for="username">Username</label>
+                <input id="username" name="username" type="text"/>
+                <label for="email">Email</label>
+                <input id="email" name="email" type="email"><br>
+                <label for="password">Password</label>
+                <input id="password" name="password" type="password"/>
+                <button id="register-btn" type="button">Register</button>
+            </form>
+        </div>
         </body>
         </html>
 	`;

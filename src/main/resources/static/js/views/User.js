@@ -1,6 +1,4 @@
 export default function UserInfo(props) {
-	const user = props;
-	console.log(user)
 	//language=HTML
 	return `
         <!DOCTYPE html>
@@ -9,33 +7,34 @@ export default function UserInfo(props) {
             <meta charset="UTF-8"/>
             <title>User Info</title>
         </head>
-        <body>
-        <h1>Your Info</h1>
+        <body id="user-page-body">
 
-        <p id="usernameDisplay">Your username: </p>
-        <form>
-            <label for="oldUsername">Your Username</label>
-            <input type="text" name="oldUsername" id="oldUsername">
-            <label for="newUsername">New Username</label>
-            <input type="text" name="newUsername" id="newUsername">
-            <button id="change-username">Change your username</button>
-        </form>
-        <p id="emailDisplay">Your email: </p>
-        <form>
-            <label for="oldEmail">Old Email</label>
-            <input type="text" name="oldEmail" id="oldEmail">
-            <label for="newEmail">New Email</label>
-            <input type="text" name="newEmail" id="newEmail">
-            <button id="change-email">Change your email</button>
-        </form>
-        <p id="userCreatedDateDisplay">Account Created Date: </p>
-        <form>
-            <label for="oldPassword">Old Password</label>
-            <input type="password" name="oldPassword" id="oldPassword">
-            <label for="newPassword">New Password</label>
-            <input type="password" name="newPassword" id="newPassword">
-            <button id="change-password">Change your password</button>
-        </form>
+        <div id="form-holder">
+            <h1 id="user-page-title">Your Info</h1>
+            <p class="mt-3">Your username: <u id="usernameDisplay"></u></p>
+            <form>
+                <label for="oldUsername">Current Username</label>
+                <input type="text" name="oldUsername" id="oldUsername">
+                <label for="newUsername">New Username</label>
+                <input type="text" name="newUsername" id="newUsername">
+                <button id="change-username">Change your username</button>
+            </form>
+            <p class="mt-3">Your email: <u id="emailDisplay"></u></p>
+            <form>
+                <label for="oldEmail">Old Email</label>
+                <input type="text" name="oldEmail" id="oldEmail">
+                <label for="newEmail">New Email</label>
+                <input type="text" name="newEmail" id="newEmail">
+                <button id="change-email">Change your email</button>
+            </form>
+            <p class="mt-3">Account Created Date: <u id="userCreatedDateDisplay"></u></p>
+            <form>
+                <label for="oldPassword">Old Password</label>
+                <input type="password" name="oldPassword" id="oldPassword">
+                <label for="newPassword">New Password</label>
+                <input type="password" name="newPassword" id="newPassword">
+                <button id="change-password">Change your password</button>
+            </form>
         </body>
         </html>
 	`
@@ -57,15 +56,15 @@ function getUser() {
 
 	let user = [];
 
-	fetch("http://localhost:8080/api/users/1", request)
+	fetch("http://localhost:8080/api/users/2", request)
 		.then(resp => {
 			return resp.json();
 		})
 		.then(data => {
 			console.log(data);
-			document.getElementById('usernameDisplay').innerHTML = "Hello: " + data.username;
-			document.getElementById('emailDisplay').innerHTML = "Email " + data.email;
-			document.getElementById('userCreatedDateDisplay').innerHTML = "Created: " + data.createdAt;
+			document.getElementById('usernameDisplay').innerHTML = data.username;
+			document.getElementById('emailDisplay').innerHTML = data.email;
+			document.getElementById('userCreatedDateDisplay').innerHTML = data.createdAt;
 		})
 		.catch(error => {
 			console.log(error)
@@ -90,6 +89,7 @@ function changePassword() {
 	})
 }
 
+//todo: call updateEmail
 function changeEmail() {
 	$("#change-email").click(function () {
 		const oldEmail = $("#oldEmail").val();
@@ -99,6 +99,7 @@ function changeEmail() {
 	})
 }
 
+//todo: call updateUsername
 function changeUsername() {
 	$("#change-username").click(function () {
 		const oldUsername = $("#oldUsername").val();

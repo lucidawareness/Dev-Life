@@ -65,4 +65,7 @@ public class UsersController {
         }
     }
 
+//    todo: add updateEmail
+//    todo: add updateUsername
+
 }
