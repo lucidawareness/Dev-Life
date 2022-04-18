@@ -11,22 +11,42 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
-nav {
+.navbar {
+    background-color: #152733;
+}
+
+.navbar-nav {
+    margin-left: auto;
 }
 
 
-#user-page-title {
+#nav-title {
+    background-image: linear-gradient(45deg, #78afa9, rgba(111, 33, 206, 0.4));
+    border-radius: 10px;
+    padding: 3px 5px;
+
+}
+
+
+#user-page-title, #register-page-title, #login-page-title {
     text-align: center;
 }
 
 #form-holder {
-    position: fixed;
-    left: 50%;
-    /* bring your own prefixes */
-    transform: translate(-50%, 0%);
+    text-align: center;
     background-color: #152733;
+    margin: 0 5em;
     padding: 2em;
-    border: white 5px solid;
     color: white;
     box-shadow: rgba(0, 0, 0, 0.35) 0px 10px 20px;
+}
+
+#register-form {
+    display: flex;
+    flex-flow: column wrap;
+    align-items: center;
+}
+
+.email-label {
+    padding: 0 2em 0 0;
 }

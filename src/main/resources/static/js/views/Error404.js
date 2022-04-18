@@ -1,3 +1,4 @@
 export default function Error404(props) {
-    return `<h1>404 ERROR</h1>`;
+    //language=HTML
+    return `<div id="form-holder"><h1>404 ERROR</h1></div>`;
 }

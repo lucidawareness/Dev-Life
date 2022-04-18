@@ -3,31 +3,33 @@ import createView from "../createView.js";
 export default function PostIndex(props) {
 	//language=HTML
 	return `
-        <header>
-            <h1>Posts Page</h1>
-        </header>
-        <main>
-            <div id="posts-container">
-                ${props.posts.map(post =>
+        <div id="form-holder">
+            <header>
+                <h1>Posts Page</h1>
+            </header>
+            <main>
+                <div id="posts-container">
+                    ${props.posts.map(post =>
 
-                        `
+                            `
            <h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            <p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
            <button class="edit-button" data-id="${post.id}">Save Changes</button>
            <button class="delete-button" data-id="${post.id}">Delete Post</button>
         `)
-                        .join('')}
-            </div>
-            <div class="form-div">
-                <form>
-                    <label for="newPostTitle">Post Title:</label><br>
-                    <input type="text" id="newPostTitle" name="newPostTitle"><br>
-                    <label for="newPostContent">Content:</label><br>
-                    <input type="text" id="newPostContent" name="newPostContent">
-                    <input id="newPostButton" type="button" value="Submit">
-                </form>
-            </div>
-        </main>
+                            .join('')}
+                </div>
+                <div class="form-div">
+                    <form>
+                        <label for="newPostTitle">Post Title:</label><br>
+                        <input type="text" id="newPostTitle" name="newPostTitle"><br>
+                        <label for="newPostContent">Content:</label><br>
+                        <input type="text" id="newPostContent" name="newPostContent">
+                        <input id="newPostButton" type="button" value="Submit">
+                    </form>
+                </div>
+            </main>
+        </div>
 	`;
 }
 
@@ -96,8 +98,8 @@ function editPostListener() {
 		const id = $(this).attr('data-id')
 		console.log(id);
 		console.log("Ready to edit");
-		const title = $(".post-title-"+id).text();
-		const content = $(".post-content-"+id).text();
+		const title = $(".post-title-" + id).text();
+		const content = $(".post-content-" + id).text();
 
 		const editedPost = {
 			title,

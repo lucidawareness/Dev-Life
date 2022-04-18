@@ -11,7 +11,7 @@ export default function UserInfo(props) {
 
         <div id="form-holder">
             <h1 id="user-page-title">Your Info</h1>
-            <p class="mt-3">Your username: <u id="usernameDisplay"></u></p>
+            <p id="form-holder-text" class="mt-3">Your username: <u id="usernameDisplay"></u></p>
             <form>
                 <label for="oldUsername">Current Username</label>
                 <input type="text" name="oldUsername" id="oldUsername">
@@ -19,7 +19,7 @@ export default function UserInfo(props) {
                 <input type="text" name="newUsername" id="newUsername">
                 <button id="change-username">Change your username</button>
             </form>
-            <p class="mt-3">Your email: <u id="emailDisplay"></u></p>
+            <p id="form-holder-text" class="mt-3">Your email: <u id="emailDisplay"></u></p>
             <form>
                 <label for="oldEmail">Old Email</label>
                 <input type="text" name="oldEmail" id="oldEmail">
@@ -27,7 +27,7 @@ export default function UserInfo(props) {
                 <input type="text" name="newEmail" id="newEmail">
                 <button id="change-email">Change your email</button>
             </form>
-            <p class="mt-3">Account Created Date: <u id="userCreatedDateDisplay"></u></p>
+            <p id="form-holder-text" class="mt-3">Account Created Date: <u id="userCreatedDateDisplay"></u></p>
             <form>
                 <label for="oldPassword">Old Password</label>
                 <input type="password" name="oldPassword" id="oldPassword">
@@ -35,6 +35,8 @@ export default function UserInfo(props) {
                 <input type="password" name="newPassword" id="newPassword">
                 <button id="change-password">Change your password</button>
             </form>
+        </div>
+        <footer></footer>
         </body>
         </html>
 	`
