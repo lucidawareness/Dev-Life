@@ -7,34 +7,52 @@ export default function UserInfo(props) {
             <meta charset="UTF-8"/>
             <title>User Info</title>
         </head>
-        <body id="user-page-body">
+        <body>
 
-        <div id="form-holder">
-            <h1 id="user-page-title">Your Info</h1>
-            <p id="form-holder-text" class="mt-3">Your username: <u id="usernameDisplay"></u></p>
-            <form>
-                <label for="oldUsername">Current Username</label>
-                <input type="text" name="oldUsername" id="oldUsername">
-                <label for="newUsername">New Username</label>
-                <input type="text" name="newUsername" id="newUsername">
-                <button id="change-username">Change your username</button>
-            </form>
-            <p id="form-holder-text" class="mt-3">Your email: <u id="emailDisplay"></u></p>
-            <form>
-                <label for="oldEmail">Old Email</label>
-                <input type="text" name="oldEmail" id="oldEmail">
-                <label for="newEmail">New Email</label>
-                <input type="text" name="newEmail" id="newEmail">
-                <button id="change-email">Change your email</button>
-            </form>
-            <p id="form-holder-text" class="mt-3">Account Created Date: <u id="userCreatedDateDisplay"></u></p>
-            <form>
-                <label for="oldPassword">Old Password</label>
-                <input type="password" name="oldPassword" id="oldPassword">
-                <label for="newPassword">New Password</label>
-                <input type="password" name="newPassword" id="newPassword">
-                <button id="change-password">Change your password</button>
-            </form>
+        <div class="container mb-4">
+            <h1 class="user-page-title">Your Info</h1>
+            <div class="row">
+                <div class="col-md-4 mb-3 user-info-box">
+                    <div class="user-info-inner-box">
+                        <div>
+                            <p id="form-holder-text" class="mt-3">Your Username: <u id="usernameDisplay"></u></p>
+                        </div>
+                        <div>
+                            <p id="form-holder-text" class="mt-3">Your Email: <u id="emailDisplay"></u></p>
+                        </div>
+                        <div>
+                            <p id="form-holder-text" class="mt-3">Account Created: <u id="userCreatedDateDisplay"></u>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-md-7 form-holder">
+                    <form>
+                        <h2>Change Username</h2>
+                        <label for="oldUsername">Current Username</label>
+                        <input class="form-control" type="text" name="oldUsername" id="oldUsername">
+                        <label for="newUsername">New Username</label>
+                        <input class="form-control" type="text" name="newUsername" id="newUsername">
+                        <button class="btn btn-dark mt-2" id="change-username">Change your username</button>
+                    </form>
+                    <form>
+                        <h2 class="mt-2">Change Email</h2>
+                        <label for="oldEmail">Old Email</label>
+                        <input class="form-control" type="text" name="oldEmail" id="oldEmail">
+                        <label for="newEmail">New Email</label>
+                        <input class="form-control" type="text" name="newEmail" id="newEmail">
+                        <button class="btn btn-dark mt-2" id="change-email">Change your email</button>
+                    </form>
+                    <form>
+                        <h2 class="mt-2">Change Password</h2>
+                        <label for="oldPassword">Old Password</label>
+                        <input class="form-control" type="password" name="oldPassword" id="oldPassword">
+                        <label for="newPassword">New Password</label>
+                        <input class="form-control" type="password" name="newPassword" id="newPassword">
+                        <button class="btn btn-dark mt-2" id="change-password">Change your password</button>
+                    </form>
+                </div>
+            </div>
         </div>
         <footer></footer>
         </body>

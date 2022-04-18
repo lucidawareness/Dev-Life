@@ -1,9 +1,11 @@
 package com.example.restblog.web;
 
+import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
 import java.util.List;
 
@@ -13,18 +15,27 @@ import static com.example.restblog.data.User.Role.USER;
 @RestController
 @RequestMapping(value = "/api/users", headers = "Accept=application/json")
 public class UsersController {
-        Date date = new Date();
+
+    static Date date = new Date();
+    static Collection<Post> posts = null;
+    static ArrayList<User> users = new ArrayList<>();
+
+    public static void main(String[] args) {
+        Post post1 = new Post(1L, "First post", "Hello this is my first post!", date, new User());
+        assert false;
+        posts.add(post1);
+        User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
+        users.add(user1);
+    }
 
     @GetMapping
     private List<User> getAll() {
-        ArrayList<User> users = new ArrayList<>();
-        users.add(new User(1, "username1", "email@1.com", "password", date, USER));
         return users;
     }
 
     @GetMapping("{id}")
     private User getById(@PathVariable Long id) {
-        return new User(id, "username"+id, "email@"+id +".com", "password", date, USER);
+        return new User(id, "username" + id, "email@" + id + ".com", "password", date, USER, posts);
     }
 
     @PostMapping
@@ -44,17 +55,17 @@ public class UsersController {
 
     @GetMapping("/username/{username}")
     private User getByUsername(@PathVariable String username) {
-        return new User(1, username, "email@.com", "password", date, USER);
+        return new User(1, username, "email@.com", "password", date, USER, posts);
     }
 
     @GetMapping("/email/{email}")
     private User geyByEmail(@PathVariable String email) {
-        return new User(1, "username", email, "password", date, USER);
+        return new User(1, "username", email, "password", date, USER, posts);
     }
 
     @GetMapping("{id}/updatePassword")
     private void updatePassword(@PathVariable Long id, @RequestParam(required = false) String oldPassword, @RequestParam String newPassword) {
-        User user1 = new User(1, "username", "email", "password", date, USER);
+        User user1 = new User(1, "username", "email", "password", date, USER, posts);
         if (oldPassword.equalsIgnoreCase(user1.getPassword())) {
             System.out.println("Password changed");
             user1.setPassword(newPassword);

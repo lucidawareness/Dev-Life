@@ -1,6 +1,7 @@
 export default function Navbar(props) {
-    return `
-        <nav class="navbar navbar-expand-lg navbar-light bg-light shadow p-3 mb-5 mt-2 bg-white rounded1">
+	return `
+        <nav class="navbar navbar-dark navbar-expand-lg shadow mb-3 rounded1">
+        <div class="container">
             <a class="navbar-brand" id="nav-title" href="/posts" data-link>Elixir Blog</a>
             <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
                 <span class="navbar-toggler-icon"></span>
@@ -15,6 +16,7 @@ export default function Navbar(props) {
                     <a class="nav-item nav-link" href="/user" data-link>User</a>
                 </div>
             </div>
+        </div>
         </nav>
     `;
 }

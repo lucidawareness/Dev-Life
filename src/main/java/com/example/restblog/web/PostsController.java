@@ -2,28 +2,38 @@ package com.example.restblog.web;
 
 
 import com.example.restblog.data.Post;
+import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+
+import static com.example.restblog.data.User.Role.USER;
+import static com.example.restblog.web.UsersController.date;
+import static com.example.restblog.web.UsersController.posts;
 
 @CrossOrigin
 @RestController
 @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
 public class PostsController {
 
+    static Date date = new Date();
+    User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
+
+
     @GetMapping
     private List<Post> getAll() {
         ArrayList<Post> posts = new ArrayList<>();
-        posts.add(new Post(1L, "Post 1", "gdfgdfdfgfdsg"));
-        posts.add(new Post(2L, "Post 2", "dfgrtdggtdf"));
-        posts.add(new Post(3L, "Post 3", "ewreeefsfrewwe"));
+        posts.add(new Post(1L, "Post 1", "gdfgdfdfgfdsg", date, user1));
+        posts.add(new Post(2L, "Post 2", "dfgrtdggtdf", date, user1));
+        posts.add(new Post(3L, "Post 3", "ewreeefsfrewwe", date, user1));
         return posts;
     }
 
     @GetMapping("{id}")
     private Post getById(@PathVariable Long id) {
-        return new Post(id, "Post#: " + id, "Content");
+        return new Post(id, "Post#: " + id, "Content", date, user1);
     }
 
     @PostMapping
