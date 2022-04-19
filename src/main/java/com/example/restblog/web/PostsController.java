@@ -1,6 +1,7 @@
 package com.example.restblog.web;
 
 
+import com.example.restblog.data.Category;
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
 import org.springframework.web.bind.annotation.*;
@@ -10,7 +11,6 @@ import java.util.Date;
 import java.util.List;
 
 import static com.example.restblog.data.User.Role.USER;
-import static com.example.restblog.web.UsersController.date;
 import static com.example.restblog.web.UsersController.posts;
 
 @CrossOrigin
@@ -18,32 +18,39 @@ import static com.example.restblog.web.UsersController.posts;
 @RequestMapping(value = "/api/posts", headers = "Accept=application/json")
 public class PostsController {
 
+//    Start of test data
     static Date date = new Date();
     User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
+    static ArrayList<Category> categories = new ArrayList<>();
 
+    public static void main(String[] args) {
+        Category cat1 = new Category(1L, "JS", posts);
+        categories.add(cat1);
+    }
+// End of test data
 
     @GetMapping
     private List<Post> getAll() {
         ArrayList<Post> posts = new ArrayList<>();
-        posts.add(new Post(1L, "Post 1", "gdfgdfdfgfdsg", date, user1));
-        posts.add(new Post(2L, "Post 2", "dfgrtdggtdf", date, user1));
-        posts.add(new Post(3L, "Post 3", "ewreeefsfrewwe", date, user1));
+        posts.add(new Post(1L, "Post 1", "gdfgdfdfgfdsg", date, user1, categories));
+        posts.add(new Post(2L, "Post 2", "dfgrtdggtdf", date, user1, categories));
+        posts.add(new Post(3L, "Post 3", "ewreeefsfrewwe", date, user1, categories));
         return posts;
     }
 
     @GetMapping("{id}")
     private Post getById(@PathVariable Long id) {
-        return new Post(id, "Post#: " + id, "Content", date, user1);
+        return new Post(id, "Post#: " + id, "Content", date, user1, categories);
     }
 
     @PostMapping
-    private void createPost(@RequestBody Post newPost){
+    private void createPost(@RequestBody Post newPost) {
         System.out.println(newPost);
     }
 
     @PutMapping("{id}")
     private void updatePost(@PathVariable Long id, @RequestBody Post post) {
-        System.out.println(id + "updated to " +post);
+        System.out.println(id + "updated to " + post);
     }
 
     @DeleteMapping("{id}")

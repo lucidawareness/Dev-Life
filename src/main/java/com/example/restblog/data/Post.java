@@ -2,6 +2,7 @@ package com.example.restblog.data;
 
 import lombok.*;
 
+import java.util.Collection;
 import java.util.Date;
 
 @Getter
@@ -15,4 +16,5 @@ public class Post {
     private String content;
     private Date createdAt;
     private User user;
+    private Collection<Category> categories;
 }

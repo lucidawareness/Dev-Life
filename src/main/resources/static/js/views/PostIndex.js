@@ -14,17 +14,18 @@ export default function PostIndex(props) {
 
                                 `
 			<div class="form-holder mb-3">
-           		<h3 class="post-title" contenteditable="true">${post.title}</h3> 
-           		<p class="post-content" contenteditable="true">${post.content}</p>
+           		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
+           		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
+           		<p class="post-author">${post.user.username}</p>
            		<p class="post-createdDate">${post.createdAt}</p>
-           		<button class="edit-button p-1 btn btn-light" data-id="${post.id}">Save Changes</button>
-           		<button class="delete-button p-1 btn btn-light" data-id="${post.id}">Delete Post</button>
+           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
+           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
         `)
                                 .join('')}
                     </div>
                     <div class="form-div col-md-4 new-post-form">
-                        <h2>New Post</h2>
+                        <h2>Crate a Post!</h2>
                         <form>
                             <label for="newPostTitle">Post Title:</label><br>
                             <input class="form-control" type="text" id="newPostTitle" name="newPostTitle"><br>

@@ -76,7 +76,7 @@
 
 @media (min-width: 768px) {
     .new-post-form {
-        top: 12em;
+        top: 20%;
         right: 2em;
         position: fixed;
     }

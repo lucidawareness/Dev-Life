@@ -21,8 +21,8 @@ export default function UserInfo(props) {
                             <p id="form-holder-text" class="mt-3">Your Email: <u id="emailDisplay"></u></p>
                         </div>
                         <div>
-                            <p id="form-holder-text" class="mt-3">Account Created: <u id="userCreatedDateDisplay"></u>
-                            </p>
+                            <p id="form-holder-text" class="mt-3 mb-0">Account Created</p>
+                            <u id="userCreatedDateDisplay"></u>
                         </div>
                     </div>
                 </div>
