@@ -1,4 +1,5 @@
 export default function UserInfo(props) {
+	console.log(props);
 	//language=HTML
 	return `
         <!DOCTYPE html>
@@ -10,39 +11,71 @@ export default function UserInfo(props) {
         <body>
 
         <div class="container mb-4">
-            <h1 class="user-page-title">Your Info</h1>
+            <h1 class="user-page-title">Your Profile</h1>
+            <div class="row justify-content-center">
+                <div class="col-8">
+                    ${props.user.posts.map(post =>
+
+                            `
+			<div class="form-holder mb-3">
+           		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
+           		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
+           		<p class="post-author">${post.user.username}</p>
+           		<div class="post-categories-div">Tags:
+           		<span class="post-tags-span-${post.id}" contenteditable="true">
+					${post.categories.map(category =>
+                                    ` ${category.name}`
+                            )}
+				</span>
+				</div>
+           		<p class="post-createdDate">${post.createdAt}</p>
+           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
+           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
+			</div>
+        `)
+                            .join('')}
+                </div>
+
+            </div>
+            <div class="row justify-content-center">
+                <h1>Your Info</h1>
+            </div>
             <div class="row">
                 <div class="col-md-4 mb-3 user-info-box">
                     <div class="user-info-inner-box">
                         <div>
-                            <p id="form-holder-text" class="mt-3">Your Username: <u id="usernameDisplay"></u></p>
+                            <p id="form-holder-text" class="mt-3">Your Username: <u
+                                    id="usernameDisplay">${props.user.username}</u></p>
                         </div>
                         <div>
-                            <p id="form-holder-text" class="mt-3">Your Email: <u id="emailDisplay"></u></p>
+                            <p id="form-holder-text" class="mt-3">Your Email: <u
+                                    id="emailDisplay">${props.user.email}</u></p>
                         </div>
                         <div>
                             <p id="form-holder-text" class="mt-3 mb-0">Account Created</p>
-                            <u id="userCreatedDateDisplay"></u>
+                            <u id="userCreatedDateDisplay">${props.user.createdAt}</u>
                         </div>
                     </div>
                 </div>
                 <div class="col-md-7 form-holder">
-                    <form>
-                        <h2>Change Username</h2>
-                        <label for="oldUsername">Current Username</label>
-                        <input class="form-control" type="text" name="oldUsername" id="oldUsername">
-                        <label for="newUsername">New Username</label>
-                        <input class="form-control" type="text" name="newUsername" id="newUsername">
-                        <button class="btn btn-dark mt-2" id="change-username">Change your username</button>
-                    </form>
-                    <form>
-                        <h2 class="mt-2">Change Email</h2>
-                        <label for="oldEmail">Old Email</label>
-                        <input class="form-control" type="text" name="oldEmail" id="oldEmail">
-                        <label for="newEmail">New Email</label>
-                        <input class="form-control" type="text" name="newEmail" id="newEmail">
-                        <button class="btn btn-dark mt-2" id="change-email">Change your email</button>
-                    </form>
+                    <div>
+                    </div>
+                    <!--                    <form>-->
+                    <!--                        <h2>Change Username</h2>-->
+                    <!--                        <label for="oldUsername">Current Username</label>-->
+                    <!--                        <input class="form-control" type="text" name="oldUsername" id="oldUsername">-->
+                    <!--                        <label for="newUsername">New Username</label>-->
+                    <!--                        <input class="form-control" type="text" name="newUsername" id="newUsername">-->
+                    <!--                        <button class="btn btn-dark mt-2" id="change-username">Change your username</button>-->
+                    <!--                    </form>-->
+                    <!--                    <form>-->
+                    <!--                        <h2 class="mt-2">Change Email</h2>-->
+                    <!--                        <label for="oldEmail">Old Email</label>-->
+                    <!--                        <input class="form-control" type="text" name="oldEmail" id="oldEmail">-->
+                    <!--                        <label for="newEmail">New Email</label>-->
+                    <!--                        <input class="form-control" type="text" name="newEmail" id="newEmail">-->
+                    <!--                        <button class="btn btn-dark mt-2" id="change-email">Change your email</button>-->
+                    <!--                    </form>-->
                     <form>
                         <h2 class="mt-2">Change Password</h2>
                         <label for="oldPassword">Old Password</label>
@@ -64,34 +97,30 @@ export function changeUserInfoEvent() {
 	changeUsername();
 	changePassword();
 	changeEmail();
-	getUser();
+	// getUser();
 }
 
 
-function getUser() {
-	let request = {
-		method: "GET",
-		headers: {"Content-Type": "application/json"}
-	}
-
-	let user = [];
-
-	fetch("http://localhost:8080/api/users/2", request)
-		.then(resp => {
-			return resp.json();
-		})
-		.then(data => {
-			console.log(data);
-			document.getElementById('usernameDisplay').innerHTML = data.username;
-			document.getElementById('emailDisplay').innerHTML = data.email;
-			document.getElementById('userCreatedDateDisplay').innerHTML = data.createdAt;
-		})
-		.catch(error => {
-			console.log(error)
-		})
-
-	console.log(user);
-}
+// function getUser() {
+// 	let request = {
+// 		method: "GET",
+// 		headers: {"Content-Type": "application/json"}
+// 	}
+//
+// 	fetch("http://localhost:8080/api/users/2", request)
+// 		.then(resp => {
+// 			return resp.json();
+// 		})
+// 		.then(data => {
+// 			console.log(data);
+// 			document.getElementById('usernameDisplay').innerHTML = data.username;
+// 			document.getElementById('emailDisplay').innerHTML = data.email;
+// 			document.getElementById('userCreatedDateDisplay').innerHTML = data.createdAt;
+// 		})
+// 		.catch(error => {
+// 			console.log(error)
+// 		})
+// }
 
 function changePassword() {
 	$("#change-password").click(function () {

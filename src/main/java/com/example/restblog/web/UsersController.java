@@ -7,10 +7,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 
 import static com.example.restblog.data.User.Role.USER;
 
@@ -26,15 +23,12 @@ public class UsersController {
     static ArrayList<User> users = new ArrayList<>();
     static ArrayList<Category> categories = new ArrayList<>();
 
-    public static void main(String[] args) {
-        Category cat1 = new Category(1L, "JS", posts);
-        categories.add(cat1);
-        Post post1 = new Post(1L, "First post", "Hello this is my first post!", date, new User(), categories);
-        assert false;
-        posts.add(post1);
-        User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
-        users.add(user1);
-    }
+
+    Post post1 = new Post(1L, "First post", "Hello this is my first post!", date, new User(), categories);
+    Post post2 = new Post(2L, "Second post", "Hello this is my second post!", date, new User(), categories);
+    Post post3 = new Post(3L, "Third post", "Hello this is my third post!", date, new User(), categories);
+    User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
+
 // End of test data
     @GetMapping
     private List<User> getAll() {
@@ -43,7 +37,7 @@ public class UsersController {
 
     @GetMapping("{id}")
     private User getById(@PathVariable Long id) {
-        return new User(id, "username" + id, "email@" + id + ".com", "password", date, USER, posts);
+        return new User(id, "username" + id, "email@" + id + ".com", "password", date, USER, Arrays.asList(post1, post2, post3));
     }
 
     @PostMapping
@@ -73,8 +67,8 @@ public class UsersController {
 
     @GetMapping("{id}/updatePassword")
     private void updatePassword(@PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword) {
-        User user1 = new User(1, "username", "email", "password", date, USER, posts);
-        if (oldPassword.equalsIgnoreCase(user1.getPassword())) {
+        User user1 = new User(id, "username", "email", "password", date, USER, posts);
+        if (oldPassword.equals(user1.getPassword())) {
             System.out.println("Password changed");
             user1.setPassword(newPassword);
             System.out.println(user1.getPassword() + " is your new password");

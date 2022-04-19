@@ -67,7 +67,9 @@ export default function router(URI) {
 		},
 		'/user': {
 			returnView: User,
-			state: {},
+			state: {
+				user: "/api/users/2"
+			},
 			uri: '/user',
 			title: ' User Info',
 			viewEvent: changeUserInfoEvent

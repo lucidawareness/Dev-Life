@@ -18,9 +18,11 @@ export default function PostIndex(props) {
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<p class="post-author">${post.user.username}</p>
            		<div class="post-categories-div">Tags:
-           			${post.categories.map(category =>
-                                        ` ${category.name}`
-                                )}
+           		<span class="post-tags-span-${post.id}" contenteditable="true">
+					${post.categories.map(category =>
+											` ${category.name}`
+									)}
+				</span>
 				</div>
            		<p class="post-createdDate">${post.createdAt}</p>
            		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
@@ -30,12 +32,14 @@ export default function PostIndex(props) {
                                 .join('')}
                     </div>
                     <div class="form-div col-md-4 new-post-form">
-                        <h2>Crate a Post!</h2>
+                        <h2 class="">Create a Post!</h2>
                         <form>
-                            <label for="newPostTitle">Post Title:</label><br>
-                            <input class="form-control" type="text" id="newPostTitle" name="newPostTitle"><br>
-                            <label for="newPostContent">Content:</label><br>
-                            <input class="form-control mb-2" type="text" id="newPostContent" name="newPostContent">
+                            <label for="newPostTitle">Post Title</label><br>
+                            <input class="form-control" type="text" id="newPostTitle" name="newPostTitle">
+                            <label for="newPostContent">Content</label><br>
+							<textarea class="form-control mb-2" type="text" id="newPostContent" name="newPostContent"></textarea>
+							<label for="newPostCategories">Categories</label>
+							<input type="text" class="form-control mb-2" id="newPostCategories" name="newPostCategories">
                             <input id="newPostButton" class="btn btn-dark" type="button" value="Submit">
                         </form>
                     </div>
@@ -109,6 +113,11 @@ function editPostListener() {
 		console.log("Ready to edit");
 		const title = $(".post-title-" + id).text();
 		const content = $(".post-content-" + id).text();
+		const tagsString = $(".post-tags-span-" + id).text().trim();
+
+		const categoryNames = tagsString.split(", ");
+
+
 
 		const editedPost = {
 			title,
