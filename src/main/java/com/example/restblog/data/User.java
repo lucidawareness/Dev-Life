@@ -11,12 +11,12 @@ import java.util.Date;
 @AllArgsConstructor
 @ToString
 public class User {
-    long id;
-    String username;
-    String email;
-    String password;
-    Date createdAt;
-    Role role;
+    private long id;
+    private String username;
+    private String email;
+    private String password;
+    private Date createdAt;
+    private Role role;
     private Collection<Post> posts;
 
     public enum Role {USER, ADMIN};

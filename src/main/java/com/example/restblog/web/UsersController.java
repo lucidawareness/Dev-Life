@@ -61,13 +61,13 @@ public class UsersController {
         System.out.println("Deleted user with id# " + id);
     }
 
-    @GetMapping("/username/{username}")
-    private User getByUsername(@PathVariable String username) {
+    @GetMapping("/username")
+    private User getByUsername(@RequestParam String username) {
         return new User(1, username, "email@.com", "password", date, USER, posts);
     }
 
-    @GetMapping("/email/{email}")
-    private User geyByEmail(@PathVariable String email) {
+    @GetMapping("/email")
+    private User geyByEmail(@RequestParam String email) {
         return new User(1, "username", email, "password", date, USER, posts);
     }
 

@@ -17,6 +17,11 @@ export default function PostIndex(props) {
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<p class="post-author">${post.user.username}</p>
+           		<div class="post-categories-div">Tags:
+           			${post.categories.map(category =>
+                                        ` ${category.name}`
+                                )}
+				</div>
            		<p class="post-createdDate">${post.createdAt}</p>
            		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
@@ -41,7 +46,6 @@ export default function PostIndex(props) {
 }
 
 function createPostListener() {
-	console.log("adding post listener")
 	$("#newPostButton").click(function () {
 		const title = $("#newPostTitle").val();
 		const content = $("#newPostContent").val();
@@ -71,7 +75,6 @@ function createPostListener() {
 }
 
 function deletePostListener() {
-	console.log("adding delete listener")
 	$(".delete-button").click(function () {
 		const id = $(this).data("id")
 		console.log(id);
@@ -100,7 +103,6 @@ function deletePostListener() {
 }
 
 function editPostListener() {
-	console.log("adding edit listener")
 	$(".edit-button").click(function () {
 		const id = $(this).data("id")
 		console.log(id);

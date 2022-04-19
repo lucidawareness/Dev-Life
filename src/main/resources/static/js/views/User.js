@@ -2,7 +2,7 @@ export default function UserInfo(props) {
 	//language=HTML
 	return `
         <!DOCTYPE html>
-        <html>
+        <html lang="EN">
         <head>
             <meta charset="UTF-8"/>
             <title>User Info</title>

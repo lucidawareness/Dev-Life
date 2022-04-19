@@ -21,16 +21,19 @@ public class PostsController {
 //    Start of test data
     static Date date = new Date();
     User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
-    static ArrayList<Category> categories = new ArrayList<>();
 
     public static void main(String[] args) {
-        Category cat1 = new Category(1L, "JS", posts);
-        categories.add(cat1);
+
     }
 // End of test data
 
     @GetMapping
     private List<Post> getAll() {
+        ArrayList<Category> categories = new ArrayList<>();
+        Category cat1 = new Category(1L, "JS", posts);
+        Category cat2 = new Category(2L, "Java", posts);
+        categories.add(cat1);
+        categories.add(cat2);
         ArrayList<Post> posts = new ArrayList<>();
         posts.add(new Post(1L, "Post 1", "gdfgdfdfgfdsg", date, user1, categories));
         posts.add(new Post(2L, "Post 2", "dfgrtdggtdf", date, user1, categories));
@@ -40,6 +43,7 @@ public class PostsController {
 
     @GetMapping("{id}")
     private Post getById(@PathVariable Long id) {
+        ArrayList<Category> categories = new ArrayList<>();
         return new Post(id, "Post#: " + id, "Content", date, user1, categories);
     }
 
