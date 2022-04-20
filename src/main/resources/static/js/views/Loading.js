@@ -1,3 +1,11 @@
 export default function Loading(props) {
-    return `<h1>Loading...</h1>`;
+	// language=HTML
+	return `
+        <div class="container">
+            <h1 class="form-holder">Loading...</h1>
+        </div>
+
+
+
+	`;
 }

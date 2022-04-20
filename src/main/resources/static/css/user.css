@@ -24,7 +24,7 @@
 
 
 #nav-title {
-    background-image: linear-gradient(45deg, #78afa9, rgba(111, 33, 206, 0.4));
+    background-image: linear-gradient(to right, #89a2b4, rgba(21, 39, 51, 0.3));
     border-radius: 10px;
     padding: 3px 5px;
     font-size: 1.5em;
@@ -74,10 +74,22 @@
     padding: 1em;
 }
 
+.err-404-links {
+    font-size: 1.5em;
+    color: black;
+    }
+
+@media (max-width: 767px) {
+
+}
+
 @media (min-width: 768px) {
-    .new-post-form {
-        top: 20%;
-        right: 2em;
-        position: fixed;
+    .create-a-post-sticky {
+        position: sticky;
+        top: 65px;
+    }
+
+    .right-col-user-page {
+        position: sticky; top: 65px;
     }
 }

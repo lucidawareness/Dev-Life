@@ -24,9 +24,9 @@ public class UsersController {
     static ArrayList<Category> categories = new ArrayList<>();
 
 
-    Post post1 = new Post(1L, "First post", "Hello this is my first post!", date, new User(), categories);
-    Post post2 = new Post(2L, "Second post", "Hello this is my second post!", date, new User(), categories);
-    Post post3 = new Post(3L, "Third post", "Hello this is my third post!", date, new User(), categories);
+//    Post post1 = new Post(1L, "First post", "Hello this is my first post!", date, new User(), categories);
+//    Post post2 = new Post(2L, "Second post", "Hello this is my second post!", date, new User(), categories);
+//    Post post3 = new Post(3L, "Third post", "Hello this is my third post!", date, new User(), categories);
     User user1 = new User(1, "username1", "email@1.com", "password", date, USER, posts);
 
 // End of test data
@@ -37,7 +37,8 @@ public class UsersController {
 
     @GetMapping("{id}")
     private User getById(@PathVariable Long id) {
-        return new User(id, "username" + id, "email@" + id + ".com", "password", date, USER, Arrays.asList(post1, post2, post3));
+//        return new User(id, "username" + id, "email@" + id + ".com", "password", date, USER, Arrays.asList(post1, post2, post3));
+        return new User();
     }
 
     @PostMapping

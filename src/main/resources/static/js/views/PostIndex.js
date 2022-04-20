@@ -1,6 +1,7 @@
 import createView from "../createView.js";
 
 export default function PostIndex(props) {
+	console.log(props);
 	//language=HTML
 	return `
         <div class="container">
@@ -10,18 +11,18 @@ export default function PostIndex(props) {
             <main>
                 <div class="row justify-content-between">
                     <div id="posts-container" class="col-md-7">
-                        ${props.posts.map(post =>
+                        ${props.posts.reverse().map(post =>
 
                                 `
 			<div class="form-holder mb-3">
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
-           		<p class="post-author">${post.user.username}</p>
+<!--           		<p class="post-author">{post.user.username}</p>-->
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-${post.id}" contenteditable="true">
-					${post.categories.map(category =>
-											` ${category.name}`
-									)}
+					// {post.categories.map(category =>
+                    //                      {category.name}
+                    //             )}
 				</span>
 				</div>
            		<p class="post-createdDate">${post.createdAt}</p>
@@ -31,17 +32,23 @@ export default function PostIndex(props) {
         `)
                                 .join('')}
                     </div>
-                    <div class="form-div col-md-4 new-post-form">
-                        <h2 class="">Create a Post!</h2>
-                        <form>
-                            <label for="newPostTitle">Post Title</label><br>
-                            <input class="form-control" type="text" id="newPostTitle" name="newPostTitle">
-                            <label for="newPostContent">Content</label><br>
-							<textarea class="form-control mb-2" type="text" id="newPostContent" name="newPostContent"></textarea>
-							<label for="newPostCategories">Categories</label>
-							<input type="text" class="form-control mb-2" id="newPostCategories" name="newPostCategories">
-                            <input id="newPostButton" class="btn btn-dark" type="button" value="Submit">
-                        </form>
+                    <div class="col-md-4 new-post-form">
+                        <div class="create-a-post-sticky">
+                            <div>
+                                <h2 class="">Create a Post!</h2>
+                                <form>
+                                    <label for="newPostTitle">Post Title</label><br>
+                                    <input class="form-control" type="text" id="newPostTitle" name="newPostTitle">
+                                    <label for="newPostContent">Content</label><br>
+                                    <textarea class="form-control mb-2" id="newPostContent"
+                                              name="newPostContent"></textarea>
+                                    <label for="newPostCategories">Categories</label>
+                                    <input type="text" class="form-control mb-2" id="newPostCategories"
+                                           name="newPostCategories">
+                                    <input id="newPostButton" class="btn btn-dark" type="button" value="Submit">
+                                </form>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </main>
@@ -116,7 +123,6 @@ function editPostListener() {
 		const tagsString = $(".post-tags-span-" + id).text().trim();
 
 		const categoryNames = tagsString.split(", ");
-
 
 
 		const editedPost = {

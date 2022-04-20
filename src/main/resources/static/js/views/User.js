@@ -11,9 +11,9 @@ export default function UserInfo(props) {
         <body>
 
         <div class="container mb-4">
-            <h1 class="user-page-title">Your Profile</h1>
-            <div class="row justify-content-center">
-                <div class="col-8">
+            <h1 class="user-page-title mb-4">Your Profile</h1>
+            <div class="row">
+                <div class="col-md-7 mb-3 user-info-box">
                     ${props.user.posts.map(post =>
 
                             `
@@ -35,55 +35,49 @@ export default function UserInfo(props) {
         `)
                             .join('')}
                 </div>
+                <div class="col-md-5">
+                    <div class="right-col-user-page">
+                        <div class="user-info-inner-box mb-3">
+                            <div>
+                                <p id="form-holder-text" class="mt-3">Your Username: <u
+                                        id="usernameDisplay">${props.user.username}</u></p>
+                            </div>
+                            <div>
+                                <p id="form-holder-text" class="mt-3">Your Email: <u
+                                        id="emailDisplay">${props.user.email}</u></p>
+                            </div>
+                            <div>
+                                <p id="form-holder-text" class="mt-3 mb-0">Account Created</p>
+                                <u id="userCreatedDateDisplay">${props.user.createdAt}</u>
+                            </div>
+                        </div>
 
-            </div>
-            <div class="row justify-content-center">
-                <h1>Your Info</h1>
-            </div>
-            <div class="row">
-                <div class="col-md-4 mb-3 user-info-box">
-                    <div class="user-info-inner-box">
-                        <div>
-                            <p id="form-holder-text" class="mt-3">Your Username: <u
-                                    id="usernameDisplay">${props.user.username}</u></p>
-                        </div>
-                        <div>
-                            <p id="form-holder-text" class="mt-3">Your Email: <u
-                                    id="emailDisplay">${props.user.email}</u></p>
-                        </div>
-                        <div>
-                            <p id="form-holder-text" class="mt-3 mb-0">Account Created</p>
-                            <u id="userCreatedDateDisplay">${props.user.createdAt}</u>
-                        </div>
+                        <!--                    <form>-->
+                        <!--                        <h2>Change Username</h2>-->
+                        <!--                        <label for="oldUsername">Current Username</label>-->
+                        <!--                        <input class="form-control" type="text" name="oldUsername" id="oldUsername">-->
+                        <!--                        <label for="newUsername">New Username</label>-->
+                        <!--                        <input class="form-control" type="text" name="newUsername" id="newUsername">-->
+                        <!--                        <button class="btn btn-dark mt-2" id="change-username">Change your username</button>-->
+                        <!--                    </form>-->
+                        <!--                    <form>-->
+                        <!--                        <h2 class="mt-2">Change Email</h2>-->
+                        <!--                        <label for="oldEmail">Old Email</label>-->
+                        <!--                        <input class="form-control" type="text" name="oldEmail" id="oldEmail">-->
+                        <!--                        <label for="newEmail">New Email</label>-->
+                        <!--                        <input class="form-control" type="text" name="newEmail" id="newEmail">-->
+                        <!--                        <button class="btn btn-dark mt-2" id="change-email">Change your email</button>-->
+                        <!--                    </form>-->
+
+                        <form class="form-holder">
+                            <h2 class="mt-2">Change Password</h2>
+                            <label for="oldPassword">Old Password</label>
+                            <input class="form-control" type="password" name="oldPassword" id="oldPassword">
+                            <label for="newPassword">New Password</label>
+                            <input class="form-control" type="password" name="newPassword" id="newPassword">
+                            <button class="btn btn-dark mt-2" id="change-password">Change your password</button>
+                        </form>
                     </div>
-                </div>
-                <div class="col-md-7 form-holder">
-                    <div>
-                    </div>
-                    <!--                    <form>-->
-                    <!--                        <h2>Change Username</h2>-->
-                    <!--                        <label for="oldUsername">Current Username</label>-->
-                    <!--                        <input class="form-control" type="text" name="oldUsername" id="oldUsername">-->
-                    <!--                        <label for="newUsername">New Username</label>-->
-                    <!--                        <input class="form-control" type="text" name="newUsername" id="newUsername">-->
-                    <!--                        <button class="btn btn-dark mt-2" id="change-username">Change your username</button>-->
-                    <!--                    </form>-->
-                    <!--                    <form>-->
-                    <!--                        <h2 class="mt-2">Change Email</h2>-->
-                    <!--                        <label for="oldEmail">Old Email</label>-->
-                    <!--                        <input class="form-control" type="text" name="oldEmail" id="oldEmail">-->
-                    <!--                        <label for="newEmail">New Email</label>-->
-                    <!--                        <input class="form-control" type="text" name="newEmail" id="newEmail">-->
-                    <!--                        <button class="btn btn-dark mt-2" id="change-email">Change your email</button>-->
-                    <!--                    </form>-->
-                    <form>
-                        <h2 class="mt-2">Change Password</h2>
-                        <label for="oldPassword">Old Password</label>
-                        <input class="form-control" type="password" name="oldPassword" id="oldPassword">
-                        <label for="newPassword">New Password</label>
-                        <input class="form-control" type="password" name="newPassword" id="newPassword">
-                        <button class="btn btn-dark mt-2" id="change-password">Change your password</button>
-                    </form>
                 </div>
             </div>
         </div>
