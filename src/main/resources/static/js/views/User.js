@@ -11,31 +11,31 @@ export default function UserInfo(props) {
         <body>
 
         <div class="container mb-4">
-            <h1 class="user-page-title mb-4">Your Profile</h1>
+            <h1 class="user-page-title mb-4">Hello ${props.user.username}</h1>
             <div class="row">
                 <div class="col-md-7 mb-3 user-info-box">
+					<h1>Your Posts</h1>
                     ${props.user.posts.map(post =>
 
                             `
 			<div class="form-holder mb-3">
-           		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
-           		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
-           		<p class="post-author">${post.user.username}</p>
+           		<h3 class="post-title-${post.id}">${post.title}</h3> 
+           		<p class="post-content-${post.id}">${post.content}</p>
+           		<p class="post-author">${props.user.username}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-${post.id}" contenteditable="true">
-					${post.categories.map(category =>
-                                    ` ${category.name}`
-                            )}
+					${post.categories.map(category =>` ${category.name}`)}
 				</span>
 				</div>
            		<p class="post-createdDate">${post.createdAt}</p>
-           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
+<!--           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>-->
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
         `)
                             .join('')}
                 </div>
                 <div class="col-md-5">
+					<h1>Your Account</h1>
                     <div class="right-col-user-page">
                         <div class="user-info-inner-box mb-3">
                             <div>

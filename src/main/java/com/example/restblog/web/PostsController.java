@@ -1,13 +1,12 @@
 package com.example.restblog.web;
 
 
-import com.example.restblog.data.Category;
-import com.example.restblog.data.Post;
-import com.example.restblog.data.PostsRepository;
+import com.example.restblog.data.*;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 
 @CrossOrigin
@@ -16,9 +15,13 @@ import java.util.List;
 public class PostsController {
 
     private final PostsRepository postRepository;
+    private final UsersRepository userRepository;
+    private final CategoriesRepository categoryRepository;
 
-    private PostsController(PostsRepository postsRepository) {
+    private PostsController(PostsRepository postsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository) {
         this.postRepository = postsRepository;
+        this.userRepository = usersRepository;
+        this.categoryRepository = categoriesRepository;
     }
 
 
@@ -29,14 +32,20 @@ public class PostsController {
     }
 
     @GetMapping("{id}")
-    private Post getById(@PathVariable Long id) {
-        return postRepository.findById(id).get();
+    private Optional<Post> getById(@PathVariable Long id) {
+        return postRepository.findById(id);
     }
 
     @PostMapping
     private void createPost(@RequestBody Post newPost) {
-        Post postToAdd = new Post(newPost.getTitle(), newPost.getContent(), newPost.getCreatedAt());
-        postRepository.save(postToAdd);
+        newPost.setAuthor(userRepository.getById(2L));
+        List<Category> categories = new ArrayList<>();
+        Category jsCat = categoryRepository.findCategoryByName("JS");
+        Category javaCat = categoryRepository.findCategoryByName("Java");
+        categories.add(jsCat);
+        categories.add(javaCat);
+        newPost.setCategories(categories);
+        postRepository.save(newPost);
         System.out.println("Post created");
     }
 

@@ -30,8 +30,8 @@ public class UsersController {
 
     @PostMapping
     private void createUser(@RequestBody User user) {
-        User newUser = new User(user.getUsername(), user.getEmail(), user.getPassword(), user.getCreatedAt(), user.getRole());
-        userRepository.save(newUser);
+        user.setRole(User.Role.USER);
+        userRepository.save(user);
         System.out.println("User created!");
     }
 

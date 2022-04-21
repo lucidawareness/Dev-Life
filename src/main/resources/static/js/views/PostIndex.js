@@ -17,14 +17,12 @@ export default function PostIndex(props) {
 			<div class="form-holder mb-3">
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
-<!--           		<p class="post-author">{post.user.username}</p>-->
-<!--           		// <div class="post-categories-div">Tags:-->
-<!--           		// <span class="post-tags-span-{post.id}" contenteditable="true">-->
-<!--				// 	// {post.categories.map(category =>-->
-<!--                //     //                      {category.name}-->
-<!--                //     //             )}-->
-<!--				// </span>-->
-<!--				</div>-->
+           		<p class="post-author">Author: ${post.author.username}</p>
+           		<div class="post-categories-div">Tags:
+           		<span class="post-tags-span-{post.id}" contenteditable="true">
+					${post.categories.map(category =>`${category.name}`)}
+				</span>
+				</div>
            		<p class="post-createdDate">${post.createdAt}</p>
            		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
@@ -46,11 +44,11 @@ export default function PostIndex(props) {
                                     <textarea class="form-control mb-2" id="newPostContent"
                                               name="newPostContent"></textarea>
                                     <p id="contentCounter">255 characters remaining</p>
-<!--                                    <label for="newPostCategories">Categories <span-->
-<!--                                            id="post-categories-validation"></span></label>-->
-<!--                                    <input type="text" class="form-control mb-2" id="newPostCategories"-->
-<!--                                           name="newPostCategories">-->
-									<p id="character-warning-on-submit"></p>
+                                    <!--                                    <label for="newPostCategories">Categories <span-->
+                                    <!--                                            id="post-categories-validation"></span></label>-->
+                                    <!--                                    <input type="text" class="form-control mb-2" id="newPostCategories"-->
+                                    <!--                                           name="newPostCategories">-->
+                                    <p id="character-warning-on-submit"></p>
                                     <input id="newPostButton" class="btn btn-dark" type="button" value="Submit">
                                 </form>
                             </div>
@@ -67,21 +65,23 @@ function countChars() {
 		let maxLength = 100;
 		let strLength = document.getElementById("newPostTitle").value.length;
 		let charRemain = (maxLength - strLength);
+		let charOverCount = (strLength - maxLength);
 
 		if (charRemain < 0) {
-			document.getElementById("titleCounter").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters</span>';
+			document.getElementById("titleCounter").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters by ' + charOverCount + '</span>';
 		} else {
 			document.getElementById("titleCounter").innerHTML = charRemain + ' characters remaining';
 		}
 	})
 
-	$("#newPostContent").keyup(()=> {
+	$("#newPostContent").keyup(() => {
 		let maxLength = 255;
 		let strLength = document.getElementById("newPostContent").value.length;
 		let charRemain = (maxLength - strLength);
+		let charOverCount = (strLength - maxLength)
 
 		if (charRemain < 0) {
-			document.getElementById("contentCounter").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters</span>';
+			document.getElementById("contentCounter").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters by ' + charOverCount + '</span>';
 		} else {
 			document.getElementById("contentCounter").innerHTML = charRemain + ' characters remaining';
 		}
@@ -178,8 +178,8 @@ function editPostListener() {
 		const id = $(this).data("id")
 		console.log(id);
 		console.log("Ready to edit");
-		const title = $(".post-title-" + id).text();
-		const content = $(".post-content-" + id).text();
+		const title = $(".post-title-" + id).text().trim();
+		const content = $(".post-content-" + id).text().trim();
 		const tagsString = $(".post-tags-span-" + id).text().trim();
 
 		const categoryNames = tagsString.split(", ");
