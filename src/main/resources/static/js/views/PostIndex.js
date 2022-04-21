@@ -18,13 +18,13 @@ export default function PostIndex(props) {
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
 <!--           		<p class="post-author">{post.user.username}</p>-->
-           		<div class="post-categories-div">Tags:
-           		<span class="post-tags-span-${post.id}" contenteditable="true">
-					// {post.categories.map(category =>
-                    //                      {category.name}
-                    //             )}
-				</span>
-				</div>
+<!--           		// <div class="post-categories-div">Tags:-->
+<!--           		// <span class="post-tags-span-{post.id}" contenteditable="true">-->
+<!--				// 	// {post.categories.map(category =>-->
+<!--                //     //                      {category.name}-->
+<!--                //     //             )}-->
+<!--				// </span>-->
+<!--				</div>-->
            		<p class="post-createdDate">${post.createdAt}</p>
            		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
@@ -37,14 +37,20 @@ export default function PostIndex(props) {
                             <div>
                                 <h2 class="">Create a Post!</h2>
                                 <form>
-                                    <label for="newPostTitle">Post Title</label><br>
+                                    <label for="newPostTitle">Post Title <span
+                                            id="post-title-validation"></span></label><br>
                                     <input class="form-control" type="text" id="newPostTitle" name="newPostTitle">
-                                    <label for="newPostContent">Content</label><br>
+                                    <p id="titleCounter">100 characters remaining</p>
+                                    <label for="newPostContent">Content <span
+                                            id="post-content-validation"></span></label><br>
                                     <textarea class="form-control mb-2" id="newPostContent"
                                               name="newPostContent"></textarea>
-                                    <label for="newPostCategories">Categories</label>
-                                    <input type="text" class="form-control mb-2" id="newPostCategories"
-                                           name="newPostCategories">
+                                    <p id="contentCounter">255 characters remaining</p>
+<!--                                    <label for="newPostCategories">Categories <span-->
+<!--                                            id="post-categories-validation"></span></label>-->
+<!--                                    <input type="text" class="form-control mb-2" id="newPostCategories"-->
+<!--                                           name="newPostCategories">-->
+									<p id="character-warning-on-submit"></p>
                                     <input id="newPostButton" class="btn btn-dark" type="button" value="Submit">
                                 </form>
                             </div>
@@ -56,10 +62,64 @@ export default function PostIndex(props) {
 	`;
 }
 
+function countChars() {
+	$("#newPostTitle").keyup(() => {
+		let maxLength = 100;
+		let strLength = document.getElementById("newPostTitle").value.length;
+		let charRemain = (maxLength - strLength);
+
+		if (charRemain < 0) {
+			document.getElementById("titleCounter").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters</span>';
+		} else {
+			document.getElementById("titleCounter").innerHTML = charRemain + ' characters remaining';
+		}
+	})
+
+	$("#newPostContent").keyup(()=> {
+		let maxLength = 255;
+		let strLength = document.getElementById("newPostContent").value.length;
+		let charRemain = (maxLength - strLength);
+
+		if (charRemain < 0) {
+			document.getElementById("contentCounter").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters</span>';
+		} else {
+			document.getElementById("contentCounter").innerHTML = charRemain + ' characters remaining';
+		}
+	})
+}
+
+
+function formValidation(title, content) {
+	const postTitle = document.getElementById("post-title-validation");
+	const postContent = document.getElementById("post-content-validation");
+	const maxCharWarn = document.getElementById("character-warning-on-submit")
+
+	if (title.trim() === "" || content.trim() === "") {
+		postTitle.textContent = "Must not be empty"
+		postContent.textContent = "Must not be empty";
+		maxCharWarn.innerHTML = '<span style="color: red;">Cannot submit with empty field(s)</span>';
+		return false
+	} else {
+		postTitle.textContent = "";
+		postContent.textContent = "";
+	}
+
+	if (title.length > 100 || content.length > 255) {
+		maxCharWarn.innerHTML = '<span style="color: red;">Cannot submit with exceeded character counts</span>'
+		return false
+	}
+	return true
+}
+
 function createPostListener() {
 	$("#newPostButton").click(function () {
 		const title = $("#newPostTitle").val();
 		const content = $("#newPostContent").val();
+
+		if (!formValidation(title, content)) {
+			return;
+		}
+
 		const newPost = {
 			title,
 			content
@@ -150,6 +210,7 @@ function editPostListener() {
 }
 
 export function PostsEvent() {
+	countChars();
 	createPostListener();
 	deletePostListener();
 	editPostListener();

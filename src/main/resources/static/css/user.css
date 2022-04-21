@@ -61,6 +61,11 @@
     font-size: 2em;
 }
 
+#post-title-validation, #post-content-validation {
+    color: red;
+    padding-left: 2em;
+}
+
 .post-createdDate {
     font-size: .70em;
 }
