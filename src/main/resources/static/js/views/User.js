@@ -1,5 +1,6 @@
+import createView from "../createView.js";
+
 export default function UserInfo(props) {
-	console.log(props);
 	//language=HTML
 	return `
         <!DOCTYPE html>
@@ -11,10 +12,10 @@ export default function UserInfo(props) {
         <body>
 
         <div class="container mb-4">
-            <h1 class="user-page-title mb-4">Hello ${props.user.username}</h1>
+            <h1 class="user-page-title mb-4">Hello <span class="text-small">${props.user.username}</span></h1>
             <div class="row">
                 <div class="col-md-7 mb-3 user-info-box">
-					<h1>Your Posts</h1>
+                    <h1>Your Posts (${(props.user.posts).length})</h1>
                     ${props.user.posts.map(post =>
 
                             `
@@ -24,10 +25,10 @@ export default function UserInfo(props) {
            		<p class="post-author">${props.user.username}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-${post.id}" contenteditable="true">
-					${post.categories.map(category =>` ${category.name}`)}
+					${post.categories.map(category => ` ${category.name}`)}
 				</span>
 				</div>
-           		<p class="post-createdDate">${post.createdAt}</p>
+           		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
 <!--           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>-->
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
@@ -35,8 +36,8 @@ export default function UserInfo(props) {
                             .join('')}
                 </div>
                 <div class="col-md-5">
-					<h1>Your Account</h1>
                     <div class="right-col-user-page">
+                        <h1>Your Account</h1>
                         <div class="user-info-inner-box mb-3">
                             <div>
                                 <p id="form-holder-text" class="mt-3">Your Username: <u
@@ -48,7 +49,8 @@ export default function UserInfo(props) {
                             </div>
                             <div>
                                 <p id="form-holder-text" class="mt-3 mb-0">Account Created</p>
-                                <u id="userCreatedDateDisplay">${props.user.createdAt}</u>
+                                <u id="userCreatedDateDisplay">${new Date(props.user.createdAt).toLocaleTimeString()}
+                                    ${new Date(props.user.createdAt).toLocaleDateString()}</u>
                             </div>
                         </div>
 
@@ -75,6 +77,7 @@ export default function UserInfo(props) {
                             <input class="form-control" type="password" name="oldPassword" id="oldPassword">
                             <label for="newPassword">New Password</label>
                             <input class="form-control" type="password" name="newPassword" id="newPassword">
+                            <p id="password-submit-success" style="color: green"></p>
                             <button class="btn btn-dark mt-2" id="change-password">Change your password</button>
                         </form>
                     </div>
@@ -121,14 +124,28 @@ function changePassword() {
 		const oldPassword = $("#oldPassword").val();
 		const newPassword = $("#newPassword").val();
 
-		$.ajax("http://localhost:8080/api/users/1/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword).done(function (data, status, jqXhr) {
-			alert("Everything went great! Check out the server's response in the console.");
-			console.log(data);
-		}).fail(function (jqXhr, status, error) {
-			alert("There was an error! Check the console for details");
-			console.log("Response status: " + status);
-			console.log("Error object: " + error);
-		})
+		const url = "http://localhost:8080/api/users/2/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword;
+		const options = {
+			method: 'GET'
+		};
+		fetch(url, options)
+			.then(response => {
+					console.log(response);
+					createView("/user")
+
+				}
+			) /* review was created successfully */
+			.catch(error => console.error(error)); /* handle errors */
+
+
+		// $.ajax("http://localhost:8080/api/users/2/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword).done(function (data, status, jqXhr) {
+		// 	alert("Everything went great! Check out the server's response in the console.");
+		// 	console.log(data);
+		// }).fail(function (jqXhr, status, error) {
+		// 	alert("There was an error! Check the console for details");
+		// 	console.log("Response status: " + status);
+		// 	console.log("Error object: " + error);
+		// })
 	})
 }
 

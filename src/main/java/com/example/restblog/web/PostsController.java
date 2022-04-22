@@ -2,6 +2,7 @@ package com.example.restblog.web;
 
 
 import com.example.restblog.data.*;
+import com.example.restblog.services.EmailService;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -17,11 +18,13 @@ public class PostsController {
     private final PostsRepository postRepository;
     private final UsersRepository userRepository;
     private final CategoriesRepository categoryRepository;
+    private final EmailService emailService;
 
-    private PostsController(PostsRepository postsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository) {
+    private PostsController(PostsRepository postsRepository, UsersRepository usersRepository, CategoriesRepository categoriesRepository, EmailService emailService) {
         this.postRepository = postsRepository;
         this.userRepository = usersRepository;
         this.categoryRepository = categoriesRepository;
+        this.emailService = emailService;
     }
 
 
@@ -46,12 +49,13 @@ public class PostsController {
         categories.add(javaCat);
         newPost.setCategories(categories);
         postRepository.save(newPost);
+        emailService.prepareAndSend(newPost, "New Post!", "");
         System.out.println("Post created");
     }
 
     @PutMapping("{id}")
     private void updatePost(@PathVariable Long id, @RequestBody Post post) {
-        Post originalPost = postRepository.findById(id).get();
+        Post originalPost = postRepository.getById(id);
         originalPost.setTitle(post.getTitle());
         originalPost.setContent(post.getContent());
 

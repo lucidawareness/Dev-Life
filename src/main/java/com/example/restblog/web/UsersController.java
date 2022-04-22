@@ -63,16 +63,12 @@ public class UsersController {
 
     @GetMapping("{id}/updatePassword")
     private void updatePassword(@PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword) {
-        User originalUser = userRepository.findById(id).get();
+        User originalUser = userRepository.getById(id);
         if (oldPassword.equals(originalUser.getPassword())) {
-            System.out.println("Password changed");
             originalUser.setPassword(newPassword);
-            System.out.println(originalUser.getPassword() + " is your new password");
-            System.out.println(originalUser);
             userRepository.save(originalUser);
         } else {
             System.out.println("Wrong Password");
-//        }
         }
 
 //    todo: add updateEmail

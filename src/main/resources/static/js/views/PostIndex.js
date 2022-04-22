@@ -1,7 +1,6 @@
 import createView from "../createView.js";
 
 export default function PostIndex(props) {
-	console.log(props);
 	//language=HTML
 	return `
         <div class="container">
@@ -19,11 +18,11 @@ export default function PostIndex(props) {
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<p class="post-author">Author: ${post.author.username}</p>
            		<div class="post-categories-div">Tags:
-           		<span class="post-tags-span-{post.id}" contenteditable="true">
+           		<span class="post-tags-span-{post.id}">
 					${post.categories.map(category =>`${category.name}`)}
 				</span>
 				</div>
-           		<p class="post-createdDate">${post.createdAt}</p>
+           		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
            		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
@@ -31,7 +30,7 @@ export default function PostIndex(props) {
                                 .join('')}
                     </div>
                     <div class="col-md-4 new-post-form">
-                        <div class="create-a-post-sticky">
+                        <div class="form-holder create-a-post-sticky">
                             <div>
                                 <h2 class="">Create a Post!</h2>
                                 <form>
