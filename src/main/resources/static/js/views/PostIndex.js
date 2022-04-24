@@ -19,7 +19,7 @@ export default function PostIndex(props) {
            		<p class="post-author">Author: ${post.author.username}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-{post.id}">
-					${post.categories.map(category =>`${category.name}`)}
+					${post.categories.map(category => `${category.name}`)}
 				</span>
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
@@ -29,10 +29,10 @@ export default function PostIndex(props) {
         `)
                                 .join('')}
                     </div>
-                    <div class="col-md-4 new-post-form">
+                    <div class="col-md-5 new-post-form">
                         <div class="form-holder create-a-post-sticky">
-                            <div>
-                                <h2 class="">Create a Post!</h2>
+                            <div id="bottom">
+                                <h2>Create a Post!</h2>
                                 <form>
                                     <label for="newPostTitle">Post Title <span
                                             id="post-title-validation"></span></label><br>
@@ -54,12 +54,59 @@ export default function PostIndex(props) {
                         </div>
                     </div>
                 </div>
+                <div id="myButton">
+                    <button id="create-post-button" type="button" class="btn btn-light feedback" data-toggle="modal"
+                            data-target="#exampleModal">Create A Post!
+                    </button>
+                </div>
+                <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
+                     aria-labelledby="exampleModalLabel" aria-hidden="true">
+                    <div class="modal-dialog" role="document">
+                        <div class="modal-content">
+                            <div class="modal-header">
+                                <h5 class="modal-title" id="exampleModalLabel">Create A Post!</h5>
+                                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                </button>
+                            </div>
+                            <div class="modal-body">
+                                <form>
+                                    <label for="newPostTitleModal">Post Title <span
+                                            id="post-title-validation-modal"></span></label><br>
+                                    <input class="form-control" type="text" id="newPostTitleModal"
+                                           name="newPostTitleModal">
+                                    <p id="titleCounterModal">100 characters remaining</p>
+                                    <label for="newPostContentModal">Content <span
+                                            id="post-content-validation-modal"></span></label><br>
+                                    <textarea class="form-control mb-2" id="newPostContentModal"
+                                              name="newPostContentModal"></textarea>
+                                    <p id="contentCounterModal">255 characters remaining</p>
+                                    <!--                                    <label for="newPostCategories">Categories <span-->
+                                    <!--                                            id="post-categories-validation"></span></label>-->
+                                    <!--                                    <input type="text" class="form-control mb-2" id="newPostCategories"-->
+                                    <!--                                           name="newPostCategories">-->
+                                    <p id="character-warning-on-submit-modal"></p>
+                                </form>
+                            </div>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+                                <button id="newPostButtonModal" class="btn btn-dark" type="button" value="Submit">
+                                    Submit
+                                </button>
+                                <!--								<button type="button" class="btn btn-primary">Save changes</button>-->
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </main>
         </div>
 	`;
 }
 
 function countChars() {
+	$("#newPostButtonModal").click(()=> {
+		console.log("Clicked");
+	})
 	$("#newPostTitle").keyup(() => {
 		let maxLength = 100;
 		let strLength = document.getElementById("newPostTitle").value.length;

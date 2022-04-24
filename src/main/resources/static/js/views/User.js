@@ -94,30 +94,8 @@ export function changeUserInfoEvent() {
 	changeUsername();
 	changePassword();
 	changeEmail();
-	// getUser();
 }
 
-
-// function getUser() {
-// 	let request = {
-// 		method: "GET",
-// 		headers: {"Content-Type": "application/json"}
-// 	}
-//
-// 	fetch("http://localhost:8080/api/users/2", request)
-// 		.then(resp => {
-// 			return resp.json();
-// 		})
-// 		.then(data => {
-// 			console.log(data);
-// 			document.getElementById('usernameDisplay').innerHTML = data.username;
-// 			document.getElementById('emailDisplay').innerHTML = data.email;
-// 			document.getElementById('userCreatedDateDisplay').innerHTML = data.createdAt;
-// 		})
-// 		.catch(error => {
-// 			console.log(error)
-// 		})
-// }
 
 function changePassword() {
 	$("#change-password").click(function () {
@@ -136,16 +114,6 @@ function changePassword() {
 				}
 			) /* review was created successfully */
 			.catch(error => console.error(error)); /* handle errors */
-
-
-		// $.ajax("http://localhost:8080/api/users/2/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword).done(function (data, status, jqXhr) {
-		// 	alert("Everything went great! Check out the server's response in the console.");
-		// 	console.log(data);
-		// }).fail(function (jqXhr, status, error) {
-		// 	alert("There was an error! Check the console for details");
-		// 	console.log("Response status: " + status);
-		// 	console.log("Error object: " + error);
-		// })
 	})
 }
 

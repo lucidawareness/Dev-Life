@@ -1,6 +1,7 @@
 package com.example.restblog.web;
 
 
+import com.example.restblog.data.CategoriesRepository;
 import com.example.restblog.data.Category;
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
@@ -17,16 +18,21 @@ import static com.example.restblog.data.User.Role.USER;
 @RequestMapping(value = "/api/categories", headers = "Accept=application/json")
 public class CategoriesController {
 
-    @GetMapping
-    private Category getPostsByCategory(@RequestParam String categoryName) {
-        List<Post> posts = new ArrayList();
-        Post post = new Post();
-        posts.add(post);
+    private final CategoriesRepository categoryRepository;
+    private final PostsController postController;
 
-        return new Category(1L, "JS", posts);
-//        for (Category category : categories) {
-//            if (category.getName().toLowerCase().contains(categoryName.toLowerCase())){
-//            }
-//        }
+    public CategoriesController(CategoriesRepository categoryRepository, PostsController postController) {
+        this.categoryRepository = categoryRepository;
+        this.postController = postController;
+    }
+
+    @GetMapping
+    List<Category> getAll(){
+        return categoryRepository.findAll();
+    }
+
+    @GetMapping("/category")
+    private Category getPostsByCategory(@RequestParam String categoryName) {
+        return categoryRepository.findCategoryByName(categoryName);
     }
 }

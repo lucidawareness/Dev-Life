@@ -1,6 +1,7 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.*;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -13,9 +14,11 @@ import java.util.*;
 public class UsersController {
 
     private final UsersRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
-    private UsersController(UsersRepository usersRepository) {
+    private UsersController(UsersRepository usersRepository, PasswordEncoder passwordEncoder) {
         this.userRepository = usersRepository;
+        this.passwordEncoder = passwordEncoder;
     }
 
     @GetMapping
@@ -31,8 +34,8 @@ public class UsersController {
     @PostMapping
     private void createUser(@RequestBody User user) {
         user.setRole(User.Role.USER);
+        user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
-        System.out.println("User created!");
     }
 
     @PutMapping("{id}")

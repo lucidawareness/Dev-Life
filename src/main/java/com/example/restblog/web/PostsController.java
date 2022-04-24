@@ -3,8 +3,10 @@ package com.example.restblog.web;
 
 import com.example.restblog.data.*;
 import com.example.restblog.services.EmailService;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
+import javax.websocket.server.PathParam;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -40,7 +42,9 @@ public class PostsController {
     }
 
     @PostMapping
-    private void createPost(@RequestBody Post newPost) {
+    private void createPost(@RequestBody Post newPost, OAuth2Authentication auth) {
+        System.out.println(auth);
+
         newPost.setAuthor(userRepository.getById(2L));
         List<Category> categories = new ArrayList<>();
         Category jsCat = categoryRepository.findCategoryByName("JS");
