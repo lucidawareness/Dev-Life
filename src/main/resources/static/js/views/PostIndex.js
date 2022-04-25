@@ -1,4 +1,5 @@
 import createView from "../createView.js";
+import {getHeaders} from "../auth.js";
 
 export default function PostIndex(props) {
 	//language=HTML
@@ -13,16 +14,16 @@ export default function PostIndex(props) {
                         ${props.posts.reverse().map(post =>
 
                                 `
-			<div class="form-holder mb-3">
+			<div class="form-holder mb-3" data-id="${post.id}">
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
-           		<p class="post-author">Author: ${post.author.username}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-{post.id}">
 					${post.categories.map(category => `${category.name}`)}
 				</span>
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
+           		<p class="post-author-${post.id}">Author: ${post.author.username}</p>
            		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
@@ -72,12 +73,12 @@ export default function PostIndex(props) {
                             <div class="modal-body">
                                 <form>
                                     <label for="newPostTitleModal">Post Title <span
-                                            id="post-title-validation-modal"></span></label><br>
+                                            id="post-title-validation-modal" style="color: red;"></span></label><br>
                                     <input class="form-control" type="text" id="newPostTitleModal"
                                            name="newPostTitleModal">
                                     <p id="titleCounterModal">100 characters remaining</p>
                                     <label for="newPostContentModal">Content <span
-                                            id="post-content-validation-modal"></span></label><br>
+                                            id="post-content-validation-modal" style="color: red;"></span></label><br>
                                     <textarea class="form-control mb-2" id="newPostContentModal"
                                               name="newPostContentModal"></textarea>
                                     <p id="contentCounterModal">255 characters remaining</p>
@@ -90,10 +91,9 @@ export default function PostIndex(props) {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button id="newPostButtonModal" class="btn btn-dark" type="button" value="Submit">
+                                <button id="newPostButtonModal" class="btn btn-dark" type="button" value="Submit" data-dismiss="modal">
                                     Submit
                                 </button>
-                                <!--								<button type="button" class="btn btn-primary">Save changes</button>-->
                             </div>
                         </div>
                     </div>
@@ -104,9 +104,7 @@ export default function PostIndex(props) {
 }
 
 function countChars() {
-	$("#newPostButtonModal").click(()=> {
-		console.log("Clicked");
-	})
+	//In page form char counter
 	$("#newPostTitle").keyup(() => {
 		let maxLength = 100;
 		let strLength = document.getElementById("newPostTitle").value.length;
@@ -132,13 +130,51 @@ function countChars() {
 			document.getElementById("contentCounter").innerHTML = charRemain + ' characters remaining';
 		}
 	})
+
+	//Modal form char counter
+	$("#newPostTitleModal").keyup(() => {
+		let maxLength = 100;
+		let strLength = document.getElementById("newPostTitleModal").value.length;
+		let charRemain = (maxLength - strLength);
+		let charOverCount = (strLength - maxLength);
+
+		if (charRemain < 0) {
+			document.getElementById("titleCounterModal").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters by ' + charOverCount + '</span>';
+		} else {
+			document.getElementById("titleCounterModal").innerHTML = charRemain + ' characters remaining';
+		}
+	})
+
+	$("#newPostContentModal").keyup(() => {
+		let maxLength = 255;
+		let strLength = document.getElementById("newPostContentModal").value.length;
+		let charRemain = (maxLength - strLength);
+		let charOverCount = (strLength - maxLength)
+
+		if (charRemain < 0) {
+			document.getElementById("contentCounterModal").innerHTML = '<span style="color: red;">You have exceeded the limit of ' + maxLength + ' characters by ' + charOverCount + '</span>';
+		} else {
+			document.getElementById("contentCounterModal").innerHTML = charRemain + ' characters remaining';
+		}
+	})
 }
 
 
-function formValidation(title, content) {
-	const postTitle = document.getElementById("post-title-validation");
-	const postContent = document.getElementById("post-content-validation");
-	const maxCharWarn = document.getElementById("character-warning-on-submit")
+function formValidation(title, content, formType) {
+	let postTitle;
+	let postContent;
+	let maxCharWarn;
+
+	if (formType === "modal") {
+		postTitle = document.getElementById("post-title-validation-modal");
+		postContent = document.getElementById("post-content-validation-modal");
+		maxCharWarn = document.getElementById("character-warning-on-submit-modal");
+	}
+	if (formType === "inPage") {
+		postTitle = document.getElementById("post-title-validation");
+		postContent = document.getElementById("post-content-validation");
+		maxCharWarn = document.getElementById("character-warning-on-submit");
+	}
 
 	if (title.trim() === "" || content.trim() === "") {
 		postTitle.textContent = "Must not be empty"
@@ -158,11 +194,14 @@ function formValidation(title, content) {
 }
 
 function createPostListener() {
-	$("#newPostButton").click(function () {
-		const title = $("#newPostTitle").val();
-		const content = $("#newPostContent").val();
+	let formType;
+	$("#newPostButtonModal").click(() => {
+		console.log("Clicked");
+		const title = $("#newPostTitleModal").val();
+		const content = $("#newPostContentModal").val();
+		formType = "modal"
 
-		if (!formValidation(title, content)) {
+		if (!formValidation(title, content, formType)) {
 			return;
 		}
 
@@ -173,22 +212,45 @@ function createPostListener() {
 		console.log("Ready to add");
 		console.log(newPost);
 
-		let request = {
-			method: "POST",
-			headers: {"Content-Type": "application/json"},
-			body: JSON.stringify(newPost)
+		createPostFetch(newPost);
+
+	})
+	$("#newPostButton").click(function () {
+		const title = $("#newPostTitle").val();
+		const content = $("#newPostContent").val();
+		formType = "inPage"
+
+		if (!formValidation(title, content, formType)) {
+			return;
 		}
 
-		fetch("http://localhost:8080/api/posts", request)
-			.then(res => {
-				console.log(res.status)
-				createView("/posts")
-			})
-			.catch(error => {
-				console.log(error)
-				createView("/posts")
-			})
+		const newPost = {
+			title,
+			content
+		}
+		console.log("Ready to add");
+		console.log(newPost);
+
+		createPostFetch(newPost);
 	})
+}
+
+function createPostFetch(newPost) {
+	let request = {
+		method: "POST",
+		headers: getHeaders(),
+		body: JSON.stringify(newPost)
+	}
+
+	fetch("http://localhost:8080/api/posts", request)
+		.then(res => {
+			console.log(res.status)
+			createView("/posts")
+		})
+		.catch(error => {
+			console.log(error)
+			createView("/posts")
+		})
 }
 
 function deletePostListener() {
@@ -203,7 +265,7 @@ function deletePostListener() {
 
 		let request = {
 			method: "DELETE",
-			headers: {"Content-Type": "application/json"},
+			headers: getHeaders(),
 			body: JSON.stringify(postId)
 		}
 
@@ -232,6 +294,7 @@ function editPostListener() {
 
 
 		const editedPost = {
+			id,
 			title,
 			content
 		}
@@ -239,7 +302,7 @@ function editPostListener() {
 
 		let request = {
 			method: "PUT",
-			headers: {"Content-Type": "application/json"},
+			headers: getHeaders(),
 			body: JSON.stringify(editedPost)
 		}
 

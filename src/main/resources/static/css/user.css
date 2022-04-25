@@ -10,6 +10,14 @@
     -moz-osx-font-smoothing: grayscale;
 }
 
+p {
+    margin-bottom: 0;
+}
+
+.post-content {
+    margin-bottom: 1em;
+}
+
 /* Loading Animation*/
 
 .center {

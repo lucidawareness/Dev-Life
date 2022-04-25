@@ -1,7 +1,9 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.*;
+import org.springframework.security.config.web.servlet.headers.HeadersSecurityMarker;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
@@ -29,6 +31,11 @@ public class UsersController {
     @GetMapping("{id}")
     private User getById(@PathVariable Long id) {
         return userRepository.findById(id).get();
+    }
+
+    @GetMapping("/userdata")
+    private User getByAuth(OAuth2Authentication auth) {
+        return userRepository.findByEmail(auth.getName());
     }
 
     @PostMapping
@@ -64,11 +71,11 @@ public class UsersController {
         return userRepository.findByEmail(email);
     }
 
-    @GetMapping("{id}/updatePassword")
-    private void updatePassword(@PathVariable Long id, @RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword) {
-        User originalUser = userRepository.getById(id);
-        if (oldPassword.equals(originalUser.getPassword())) {
-            originalUser.setPassword(newPassword);
+    @GetMapping("/updatePassword")
+    private void updatePassword(@RequestParam(required = false) String oldPassword, @Valid @Size(min = 3) @RequestParam String newPassword, OAuth2Authentication auth) {
+        User originalUser = userRepository.findByEmail(auth.getName());
+        if (passwordEncoder.matches(oldPassword, originalUser.getPassword())) {
+            originalUser.setPassword(passwordEncoder.encode(newPassword));
             userRepository.save(originalUser);
         } else {
             System.out.println("Wrong Password");

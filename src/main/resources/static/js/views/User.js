@@ -1,4 +1,5 @@
 import createView from "../createView.js";
+import {getHeaders} from "../auth.js";
 
 export default function UserInfo(props) {
 	//language=HTML
@@ -21,14 +22,14 @@ export default function UserInfo(props) {
                             `
 			<div class="form-holder mb-3">
            		<h3 class="post-title-${post.id}">${post.title}</h3> 
-           		<p class="post-content-${post.id}">${post.content}</p>
-           		<p class="post-author">${props.user.username}</p>
+           		<p class="post-content post-content-${post.id}">${post.content}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-${post.id}" contenteditable="true">
 					${post.categories.map(category => ` ${category.name}`)}
 				</span>
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
+           		<p class="post-author">Author: ${props.user.username}</p>
 <!--           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>-->
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
@@ -94,17 +95,40 @@ export function changeUserInfoEvent() {
 	changeUsername();
 	changePassword();
 	changeEmail();
+	// getUser();
 }
 
+
+// function getUser() {
+// 	let request = {
+// 		method: "GET",
+// 		headers: {"Content-Type": "application/json"}
+// 	}
+//
+// 	fetch("http://localhost:8080/api/users/2", request)
+// 		.then(resp => {
+// 			return resp.json();
+// 		})
+// 		.then(data => {
+// 			console.log(data);
+// 			document.getElementById('usernameDisplay').innerHTML = data.username;
+// 			document.getElementById('emailDisplay').innerHTML = data.email;
+// 			document.getElementById('userCreatedDateDisplay').innerHTML = data.createdAt;
+// 		})
+// 		.catch(error => {
+// 			console.log(error)
+// 		})
+// }
 
 function changePassword() {
 	$("#change-password").click(function () {
 		const oldPassword = $("#oldPassword").val();
 		const newPassword = $("#newPassword").val();
 
-		const url = "http://localhost:8080/api/users/2/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword;
+		const url = "http://localhost:8080/api/users/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword;
 		const options = {
-			method: 'GET'
+			method: 'GET',
+			headers: getHeaders()
 		};
 		fetch(url, options)
 			.then(response => {
@@ -114,6 +138,16 @@ function changePassword() {
 				}
 			) /* review was created successfully */
 			.catch(error => console.error(error)); /* handle errors */
+
+
+		// $.ajax("http://localhost:8080/api/users/2/updatePassword?oldPassword=" + oldPassword + "&newPassword=" + newPassword).done(function (data, status, jqXhr) {
+		// 	alert("Everything went great! Check out the server's response in the console.");
+		// 	console.log(data);
+		// }).fail(function (jqXhr, status, error) {
+		// 	alert("There was an error! Check the console for details");
+		// 	console.log("Response status: " + status);
+		// 	console.log("Error object: " + error);
+		// })
 	})
 }
 

@@ -32,7 +32,7 @@ export default function addLoginEvent() {
             },
             request).then((data) => {
             setTokens(data);
-            createView("/");
+            createView("/posts");
         });
     });
 }
@@ -63,5 +63,16 @@ function setTokens(responseData) {
     if (responseData.route['refresh_token']) {
         localStorage.setItem("refresh_token", responseData.route['refresh_token']);
         console.log("Refresh token set")
+    }
+}
+
+export function isLoggedIn() {
+    if (localStorage.getItem('access_token')) {
+        // if (jwtDecode(localStorage.getItem('access_token').exp < Date.now() / 1000)) {
+        //
+        // }
+        return true
+    } else {
+        return false;
     }
 }

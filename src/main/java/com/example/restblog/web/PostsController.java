@@ -30,7 +30,6 @@ public class PostsController {
     }
 
 
-
     @GetMapping
     private List<Post> getAll() {
         return postRepository.findAll();
@@ -43,9 +42,9 @@ public class PostsController {
 
     @PostMapping
     private void createPost(@RequestBody Post newPost, OAuth2Authentication auth) {
-        System.out.println(auth);
-
-        newPost.setAuthor(userRepository.getById(2L));
+        String email = auth.getName();
+        User user = userRepository.findByEmail(email);
+        newPost.setAuthor(user);
         List<Category> categories = new ArrayList<>();
         Category jsCat = categoryRepository.findCategoryByName("JS");
         Category javaCat = categoryRepository.findCategoryByName("Java");
@@ -58,17 +57,25 @@ public class PostsController {
     }
 
     @PutMapping("{id}")
-    private void updatePost(@PathVariable Long id, @RequestBody Post post) {
+    private void updatePost(@PathVariable Long id, @RequestBody Post post, OAuth2Authentication auth) {
         Post originalPost = postRepository.getById(id);
-        originalPost.setTitle(post.getTitle());
-        originalPost.setContent(post.getContent());
 
-        postRepository.save(originalPost);
-
+        if (originalPost.getAuthor() == userRepository.findByEmail(auth.getName())) {
+            originalPost.setTitle(post.getTitle());
+            originalPost.setContent(post.getContent());
+            postRepository.save(originalPost);
+        } else {
+            System.out.println("Unauthorized");
+        }
     }
 
     @DeleteMapping("{id}")
-    private void deletePost(@PathVariable Long id) {
-        postRepository.delete(postRepository.getById(id));
+    private void deletePost(@PathVariable Long id, OAuth2Authentication auth) {
+        Post post = postRepository.getById(id);
+        if (post.getAuthor() == userRepository.findByEmail(auth.getName())) {
+            postRepository.delete(postRepository.getById(id));
+        } else {
+            System.out.println("Unauthorized");
+        }
     }
 }

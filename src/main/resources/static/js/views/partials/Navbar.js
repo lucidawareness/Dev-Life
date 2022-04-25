@@ -1,6 +1,10 @@
+import {isLoggedIn} from "../../auth.js";
+
 export default function Navbar(props) {
+
+	const loggedIn = isLoggedIn();
 	//language=HTML
-	return `
+	let html = `
         <nav class="navbar navbar-dark navbar-expand-lg shadow mb-3 rounded1">
             <div class="container">
                 <a class="navbar-brand" id="nav-title" href="/posts" data-link>Elixir Blog</a>
@@ -10,17 +14,27 @@ export default function Navbar(props) {
                 </button>
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
-                        <a class="nav-item nav-link text-light" href="/" data-link>Home</a>
-                        <a class="nav-item nav-link text-light" href="/posts" data-link>Posts</a>
-                        <a class="nav-item nav-link text-light" href="/about" data-link>About</a>
-                        <a class="nav-item nav-link text-light" href="/login" data-link>Login</a>
-                        <a class="nav-item nav-link text-light" href="/register" data-link>Register</a>
-                        <a class="nav-item nav-link text-light" href="/user" data-link>User</a>
+                        <a class="nav-item nav-link text-light" href="/" data-link>Home</a>`;
+	if (loggedIn) {
+		html += `<a class="nav-item nav-link text-light" href="/posts" data-link>Posts</a>`;
+	}
+	html += `<a class="nav-item nav-link text-light" href="/about" data-link>About</a>`;
+	if (!loggedIn) {
+		html += `<a class="nav-item nav-link text-light" href="/login" data-link>Login</a>
+                        				<a class="nav-item nav-link text-light" href="/register" data-link>Register</a>`
+	}
+	if (loggedIn) {
+		html += `<a class="nav-item nav-link text-light" href="/user" data-link>User</a><a class="nav-item nav-link text-light" href="/logout" data-link>Logout</a>`
+
+	}
+	html += `
                     </div>
                 </div>
             </div>
         </nav>
 	`;
+
+	return html;
 }
 
 // <nav>
