@@ -27,6 +27,9 @@ export default function Register(props) {
                         <label for="password">Password</label>
                         <input class="form-control" id="password" name="password" type="password"/>
                     </div>
+					<div>
+                        <a href="/login" data-link>Already have an account?</a>
+					</div>
                     <div>
                         <button id="register-btn" class="btn btn-light mt-3" type="button">Register</button>
                     </div>

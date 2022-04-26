@@ -67,12 +67,5 @@ function setTokens(responseData) {
 }
 
 export function isLoggedIn() {
-    if (localStorage.getItem('access_token')) {
-        // if (jwtDecode(localStorage.getItem('access_token').exp < Date.now() / 1000)) {
-        //
-        // }
-        return true
-    } else {
-        return false;
-    }
+    return !!localStorage.getItem('access_token');
 }

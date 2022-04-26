@@ -15,6 +15,9 @@ export default function Login(props) {
                 <input class="form-control" id="username" name="username" type="text"/>
                 <label for="password">Password</label>
                 <input class="form-control" id="password" name="password" type="password"/>
+				<div>
+                    <a href="/register" data-link>Not Registered?</a>
+				</div>
                 <input class="btn btn-light mt-3" id="login-btn" type="button" value="Log In"/>
             </form>
         </div>
