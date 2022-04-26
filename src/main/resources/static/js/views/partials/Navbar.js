@@ -1,6 +1,9 @@
-import {isLoggedIn} from "../../auth.js";
+import {getUserRole, isLoggedIn} from "../../auth.js";
 
 export default function Navbar(props) {
+
+	const userRole = getUserRole();
+	console.log(userRole);
 
 	const loggedIn = isLoggedIn();
 	//language=HTML
@@ -15,9 +18,7 @@ export default function Navbar(props) {
                 <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
                     <div class="navbar-nav">
                         <a class="nav-item nav-link text-light" href="/" data-link>Home</a>`;
-	if (loggedIn) {
-		html += `<a class="nav-item nav-link text-light" href="/posts" data-link>Posts</a>`;
-	}
+	html += `<a class="nav-item nav-link text-light" href="/posts" data-link>Posts</a>`;
 	html += `<a class="nav-item nav-link text-light" href="/about" data-link>About</a>`;
 	if (!loggedIn) {
 		html += `<a class="nav-item nav-link text-light" href="/login" data-link>Login</a>
@@ -26,6 +27,9 @@ export default function Navbar(props) {
 	if (loggedIn) {
 		html += `<a class="nav-item nav-link text-light" href="/user" data-link>User</a><a class="nav-item nav-link text-light" href="/logout" data-link>Logout</a>`
 
+	}
+	if (userRole === "ADMIN") {
+		html += `<a class="nav-item nav-link text-light" href="/admin" data-link>Admin</a>`
 	}
 	html += `
                     </div>

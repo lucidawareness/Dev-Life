@@ -38,7 +38,12 @@ public class UsersController {
         return userRepository.findByEmail(auth.getName());
     }
 
-    @PostMapping
+    @GetMapping("/admin")
+    private List<User> getUsersAdmin() {
+        return userRepository.findAll();
+    }
+
+    @PostMapping("/create")
     private void createUser(@RequestBody User user) {
         user.setRole(User.Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));

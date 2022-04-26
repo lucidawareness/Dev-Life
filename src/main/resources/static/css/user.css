@@ -14,6 +14,10 @@ p {
     margin-bottom: 0;
 }
 
+#error-msg {
+    display: none;
+}
+
 .post-content {
     margin-bottom: 1em;
 }
@@ -197,10 +201,12 @@ p {
 }
 
 @media (min-width: 768px) {
-    .create-a-post-sticky {
+    .create-a-post-sticky, .create-a-post-sticky-login {
         position: sticky;
         top: 65px;
     }
+
+
 
     .right-col-user-page {
         position: sticky; top: 65px;

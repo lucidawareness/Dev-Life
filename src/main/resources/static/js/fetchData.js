@@ -18,8 +18,12 @@ export default function fetchData(state, request) {
         promises.push(
             fetch(baseUri + state[pieceOfState], request)
                 .then(function (res) {
+                    console.log(res);
                     if (res.status === 401){
                         createView('/login');
+                        return;
+                    } else if (res.status === 500) {
+                        createView('/posts')
                         return;
                     }
                     return res.json();

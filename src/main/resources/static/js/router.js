@@ -11,6 +11,7 @@ import {PostsEvent} from "./views/PostIndex.js"
 import User from "./views/User.js";
 import {changeUserInfoEvent} from "./views/User.js";
 import Logout, {LogoutEvent} from "./views/Logout.js";
+import Admin, {adminEvents} from "./views/Admin.js";
 
 /**
  * Returns the route object for a specific route based on the given URI
@@ -81,6 +82,15 @@ export default function router(URI) {
 			uri: '/user',
 			title: ' User Info',
 			viewEvent: changeUserInfoEvent
+		},
+		'/admin': {
+			returnView: Admin,
+			state: {
+				admin: "/api/users/admin"
+			},
+			uri: '/admin',
+			title: 'Admin',
+			viewEvent: adminEvents
 		}
 	};
 

@@ -1,7 +1,7 @@
 export default function Login(props) {
 	//language=HTML
 	return `<!DOCTYPE html>
-    <html>
+    <html lang="en">
     <head>
         <meta charset="UTF-8"/>
         <title>Log In</title>
@@ -18,6 +18,7 @@ export default function Login(props) {
 				<div>
                     <a href="/register" data-link>Not Registered?</a>
 				</div>
+				<p id="error-msg">Invalid Credentials</p>
                 <input class="btn btn-light mt-3" id="login-btn" type="button" value="Log In"/>
             </form>
         </div>

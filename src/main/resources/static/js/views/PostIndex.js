@@ -1,5 +1,5 @@
 import createView from "../createView.js";
-import {getHeaders} from "../auth.js";
+import {getHeaders, getUserRole} from "../auth.js";
 
 export default function PostIndex(props) {
 	//language=HTML
@@ -24,8 +24,6 @@ export default function PostIndex(props) {
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
            		<p class="post-author-${post.id}">Author: ${post.author.username}</p>
-           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
-           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
         `)
                                 .join('')}
@@ -53,11 +51,19 @@ export default function PostIndex(props) {
                                 </form>
                             </div>
                         </div>
+                        <div class="form-holder create-a-post-sticky-login">
+                            <button id="create-a-post-login-button" class="btn btn-light feedback">Login to post!
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div id="myButton">
                     <button id="create-post-button" type="button" class="btn btn-light feedback" data-toggle="modal"
                             data-target="#exampleModal">Create A Post!
+                    </button>
+                    <button id="create-post-login-button" type="button" class="btn btn-light feedback"
+                            data-toggle="modal">
+                        Log In To Post!
                     </button>
                 </div>
                 <div class="modal fade" id="exampleModal" tabindex="-1" role="dialog"
@@ -91,7 +97,8 @@ export default function PostIndex(props) {
                             </div>
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-                                <button id="newPostButtonModal" class="btn btn-dark" type="button" value="Submit" data-dismiss="modal">
+                                <button id="newPostButtonModal" class="btn btn-dark" type="button" value="Submit"
+                                        data-dismiss="modal">
                                     Submit
                                 </button>
                             </div>
@@ -253,74 +260,33 @@ function createPostFetch(newPost) {
 		})
 }
 
-function deletePostListener() {
-	$(".delete-button").click(function () {
-		const id = $(this).data("id")
-		console.log(id);
-		console.log("Ready to delete");
-
-		const postId = {
-			id: id
-		}
-
-		let request = {
-			method: "DELETE",
-			headers: getHeaders(),
-			body: JSON.stringify(postId)
-		}
-
-		fetch(("http://localhost:8080/api/posts/" + id), request)
-			.then(res => {
-				console.log(res.status)
-				createView("/posts")
-			})
-			.catch(error => {
-				console.log(error)
-				createView("/posts")
-			})
-	})
+function hideCreatePostIfNotLoggedIn() {
+	console.log(getUserRole())
+	if (getUserRole() === false) {
+		$(".create-a-post-sticky").css("display", "none");
+		$("#create-post-button").css("display", "none");
+		$("#create-post-login-button").css("display", "block");
+		$(".create-a-post-sticky-login").css("display", "block");
+	} else if (getUserRole() === "USER" || getUserRole() === "ADMIN") {
+		$(".create-a-post-sticky").css("display", "block");
+		$("#create-post-button").css("display", "block");
+		$("#create-post-login-button").css("display", "none");
+		$(".create-a-post-sticky-login").css("display", "none");
+	}
 }
 
-function editPostListener() {
-	$(".edit-button").click(function () {
-		const id = $(this).data("id")
-		console.log(id);
-		console.log("Ready to edit");
-		const title = $(".post-title-" + id).text().trim();
-		const content = $(".post-content-" + id).text().trim();
-		const tagsString = $(".post-tags-span-" + id).text().trim();
-
-		const categoryNames = tagsString.split(", ");
-
-
-		const editedPost = {
-			id,
-			title,
-			content
-		}
-		console.log(editedPost)
-
-		let request = {
-			method: "PUT",
-			headers: getHeaders(),
-			body: JSON.stringify(editedPost)
-		}
-
-		fetch(("http://localhost:8080/api/posts/" + id), request)
-			.then(res => {
-				console.log(res.status)
-				createView("/posts")
-			})
-			.catch(error => {
-				console.log(error)
-				createView("/posts")
-			})
+function loginButtonRedirect() {
+	$("#create-post-login-button").click(() => {
+		createView("/login")
+	})
+	$(".create-a-post-sticky-login").click(() => {
+		createView("/login")
 	})
 }
 
 export function PostsEvent() {
 	countChars();
 	createPostListener();
-	deletePostListener();
-	editPostListener();
+	hideCreatePostIfNotLoggedIn();
+	loginButtonRedirect();
 }

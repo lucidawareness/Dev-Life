@@ -41,40 +41,50 @@ public class PostsController {
 
     @PostMapping
     private void createPost(@RequestBody Post newPost, OAuth2Authentication auth) {
-        String email = auth.getName();
-        User user = userRepository.findByEmail(email);
-        newPost.setAuthor(user);
-        List<Category> categories = new ArrayList<>();
-        Category jsCat = categoryRepository.findCategoryByName("JS");
-        Category javaCat = categoryRepository.findCategoryByName("Java");
-        categories.add(jsCat);
-        categories.add(javaCat);
-        newPost.setCategories(categories);
-        postRepository.save(newPost);
-        emailService.prepareAndSend(newPost, "New Post!", "");
-        System.out.println("Post created");
+        if (auth != null) {
+            String email = auth.getName();
+            User user = userRepository.findByEmail(email);
+            newPost.setAuthor(user);
+            List<Category> categories = new ArrayList<>();
+            Category jsCat = categoryRepository.findCategoryByName("JS");
+            Category javaCat = categoryRepository.findCategoryByName("Java");
+            categories.add(jsCat);
+            categories.add(javaCat);
+            newPost.setCategories(categories);
+            postRepository.save(newPost);
+            emailService.prepareAndSend(newPost, "New Post!", "");
+            System.out.println("Post created");
+        }
     }
 
     @PutMapping("{id}")
     private void updatePost(@PathVariable Long id, @RequestBody Post post, OAuth2Authentication auth) {
         Post originalPost = postRepository.getById(id);
+        if (auth != null) {
+            User loggedInUser = userRepository.findByEmail(auth.getName());
+            System.out.println(loggedInUser.getRole());
 
-        if (originalPost.getAuthor() == userRepository.findByEmail(auth.getName())) {
-            originalPost.setTitle(post.getTitle());
-            originalPost.setContent(post.getContent());
-            postRepository.save(originalPost);
-        } else {
-            System.out.println("Unauthorized");
+            if (originalPost.getAuthor() == loggedInUser || loggedInUser.getRole().equals(User.Role.ADMIN)) {
+                originalPost.setTitle(post.getTitle());
+                originalPost.setContent(post.getContent());
+                postRepository.save(originalPost);
+            } else {
+                System.out.println("Unauthorized");
+            }
         }
     }
 
     @DeleteMapping("{id}")
     private void deletePost(@PathVariable Long id, OAuth2Authentication auth) {
-        Post post = postRepository.getById(id);
-        if (post.getAuthor() == userRepository.findByEmail(auth.getName())) {
-            postRepository.delete(postRepository.getById(id));
-        } else {
-            System.out.println("Unauthorized");
+        if (auth != null) {
+            Post post = postRepository.getById(id);
+            User loggedInUser = userRepository.findByEmail(auth.getName());
+            if (post.getAuthor() == loggedInUser || loggedInUser.getRole().equals(User.Role.ADMIN)) {
+                postRepository.delete(postRepository.getById(id));
+            } else {
+                System.out.println("Unauthorized");
+            }
         }
+
     }
 }

@@ -21,8 +21,8 @@ export default function UserInfo(props) {
 
                             `
 			<div class="form-holder mb-3">
-           		<h3 class="post-title-${post.id}">${post.title}</h3> 
-           		<p class="post-content post-content-${post.id}">${post.content}</p>
+           		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
+           		<p class="post-content post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-${post.id}" contenteditable="true">
 					${post.categories.map(category => ` ${category.name}`)}
@@ -30,7 +30,7 @@ export default function UserInfo(props) {
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
            		<p class="post-author">Author: ${props.user.username}</p>
-<!--           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>-->
+           		<button class="edit-button p-1 my-2 btn btn-light" data-id="${post.id}">Save Changes</button>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${post.id}">Delete Post</button>
 			</div>
         `)
@@ -95,30 +95,74 @@ export function changeUserInfoEvent() {
 	changeUsername();
 	changePassword();
 	changeEmail();
-	// getUser();
+	deletePostListener();
+	editPostListener();
 }
 
+function deletePostListener() {
+	$(".delete-button").click(function () {
+		const id = $(this).data("id")
+		console.log(id);
+		console.log("Ready to delete");
 
-// function getUser() {
-// 	let request = {
-// 		method: "GET",
-// 		headers: {"Content-Type": "application/json"}
-// 	}
-//
-// 	fetch("http://localhost:8080/api/users/2", request)
-// 		.then(resp => {
-// 			return resp.json();
-// 		})
-// 		.then(data => {
-// 			console.log(data);
-// 			document.getElementById('usernameDisplay').innerHTML = data.username;
-// 			document.getElementById('emailDisplay').innerHTML = data.email;
-// 			document.getElementById('userCreatedDateDisplay').innerHTML = data.createdAt;
-// 		})
-// 		.catch(error => {
-// 			console.log(error)
-// 		})
-// }
+		const postId = {
+			id: id
+		}
+
+		let request = {
+			method: "DELETE",
+			headers: getHeaders(),
+			body: JSON.stringify(postId)
+		}
+
+		fetch(("http://localhost:8080/api/posts/" + id), request)
+			.then(res => {
+				console.log(res.status)
+				createView("/user")
+			})
+			.catch(error => {
+				console.log(error)
+				createView("/user")
+			})
+	})
+}
+
+function editPostListener() {
+	$(".edit-button").click(function () {
+		const id = $(this).data("id")
+		console.log(id);
+		console.log("Ready to edit");
+		const title = $(".post-title-" + id).text().trim();
+		const content = $(".post-content-" + id).text().trim();
+		const tagsString = $(".post-tags-span-" + id).text().trim();
+
+		const categoryNames = tagsString.split(", ");
+
+
+		const editedPost = {
+			id,
+			title,
+			content
+		}
+		console.log(editedPost)
+
+		let request = {
+			method: "PUT",
+			headers: getHeaders(),
+			body: JSON.stringify(editedPost)
+		}
+
+		fetch(("http://localhost:8080/api/posts/" + id), request)
+			.then(res => {
+				console.log(res.status)
+				createView("/user")
+			})
+			.catch(error => {
+				console.log(error)
+				createView("/user")
+			})
+	})
+}
 
 function changePassword() {
 	$("#change-password").click(function () {
