@@ -14,7 +14,12 @@ p {
     margin-bottom: 0;
 }
 
-#error-msg {
+#error-msg,
+#usernameEmptyMessage,
+#emailEmptyMessage,
+#emailInvalidFormatMessage,
+#passwordEmptyMessage,
+#emailOrUsernameExists {
     display: none;
 }
 

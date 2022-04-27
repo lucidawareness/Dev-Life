@@ -15,8 +15,8 @@ export default function PostIndex(props) {
 
                                 `
 			<div class="form-holder mb-3" data-id="${post.id}">
-           		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
-           		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
+           		<h3 class="post-title-${post.id}">${post.title}</h3> 
+           		<p class="post-content-${post.id}">${post.content}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-{post.id}">
 					${post.categories.map(category => `${category.name}`)}
@@ -37,15 +37,20 @@ export default function PostIndex(props) {
                                             id="post-title-validation"></span></label><br>
                                     <input class="form-control" type="text" id="newPostTitle" name="newPostTitle">
                                     <p id="titleCounter">100 characters remaining</p>
-                                    <label for="newPostContent">Content <span
+                                    <label for="newPostContent" class="mt-2">Content <span
                                             id="post-content-validation"></span></label><br>
                                     <textarea class="form-control mb-2" id="newPostContent"
                                               name="newPostContent"></textarea>
                                     <p id="contentCounter">255 characters remaining</p>
-                                    <!--                                    <label for="newPostCategories">Categories <span-->
-                                    <!--                                            id="post-categories-validation"></span></label>-->
-                                    <!--                                    <input type="text" class="form-control mb-2" id="newPostCategories"-->
-                                    <!--                                           name="newPostCategories">-->
+
+
+                                    <label for="newPostCategories" class="mt-2">Categories <span
+                                            id="post-categories-validation"></span></label>
+                                    <input type="text" class="form-control mb-2" id="newPostCategories"
+                                           name="newPostCategories">
+									<p>Ex: "java, js, html"</p>
+
+
                                     <p id="character-warning-on-submit"></p>
                                     <input id="newPostButton" class="btn btn-dark" type="button" value="Submit">
                                 </form>
@@ -83,15 +88,20 @@ export default function PostIndex(props) {
                                     <input class="form-control" type="text" id="newPostTitleModal"
                                            name="newPostTitleModal">
                                     <p id="titleCounterModal">100 characters remaining</p>
-                                    <label for="newPostContentModal">Content <span
+                                    <label for="newPostContentModal" class="mt-2">Content <span
                                             id="post-content-validation-modal" style="color: red;"></span></label><br>
                                     <textarea class="form-control mb-2" id="newPostContentModal"
                                               name="newPostContentModal"></textarea>
                                     <p id="contentCounterModal">255 characters remaining</p>
-                                    <!--                                    <label for="newPostCategories">Categories <span-->
-                                    <!--                                            id="post-categories-validation"></span></label>-->
-                                    <!--                                    <input type="text" class="form-control mb-2" id="newPostCategories"-->
-                                    <!--                                           name="newPostCategories">-->
+
+
+                                    <label for="newPostCategories" class="mt-2">Categories <span
+                                            id="post-categories-validation"></span></label>
+                                    <input type="text" class="form-control mb-2" id="newPostCategories"
+                                           name="newPostCategories">
+                                    <p>Tags separated by ", " ex: "java, js, html"</p>
+
+
                                     <p id="character-warning-on-submit-modal"></p>
                                 </form>
                             </div>
@@ -230,6 +240,7 @@ function createPostListener() {
 		if (!formValidation(title, content, formType)) {
 			return;
 		}
+
 
 		const newPost = {
 			title,

@@ -8,9 +8,20 @@ import createView from "./createView.js";
 export default function addLoginEvent() {
 	console.log("entered addLoginEvent")
 	document.querySelector("#login-btn").addEventListener("click", function () {
+
+		let errMsg = document.getElementById("error-msg");
+		let usernameVal = document.querySelector("#username").value
+		let passVal = document.querySelector("#password").value
+
+		if (usernameVal === "" || passVal ==="") {
+			errMsg.style.display = "block"
+			errMsg.style.color = "red"
+			return;
+		}
+
 		let obj = {
-			username: document.querySelector("#username").value,
-			password: document.querySelector("#password").value,
+			username: usernameVal,
+			password: passVal,
 			grant_type: 'password'
 		}
 		console.log("got to login event")
@@ -38,8 +49,8 @@ export default function addLoginEvent() {
 					createView("/posts");
 				}
 			}
-			document.getElementById("error-msg").style.color = "red"
-			document.getElementById("error-msg").style.display = "block"
+			errMsg.style.display = "block"
+			errMsg.style.color = "red"
 		}).catch((res) => {
 			console.log(res);
 		});

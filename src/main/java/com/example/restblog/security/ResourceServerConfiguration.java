@@ -37,10 +37,10 @@ public class ResourceServerConfiguration extends ResourceServerConfigurerAdapter
 
                 .antMatchers("/api/users/userdata").hasAnyAuthority("ADMIN", "USER")
                 .antMatchers("/api/users/admin").hasAnyAuthority("ADMIN")
+                .antMatchers("/api/users/create").permitAll()
                 .antMatchers("/api/users/**").hasAnyAuthority("ADMIN")
                 .antMatchers("/api/posts/**").permitAll()
                 .antMatchers("/swagger-ui/**", "/v3/api-docs/**").permitAll()
-                .antMatchers("/api/users/create").permitAll()
                 .antMatchers("/api/**").hasAnyAuthority("ADMIN")
                 .antMatchers("/**").permitAll()
 

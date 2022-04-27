@@ -70,25 +70,24 @@ function checkIfAuthorized(props) {
 }
 
 function navLinkListeners() {
-	let loadingHMTL = $(".right-col-pages").html(`<h1>Loading...</h1>`)
 	$(".li-dashboard").click(() => {
 		console.log("dash click");
-		loadingHMTL();
+		$(".right-col-pages").html(`<h1>Loading...</h1>`)
 		createView("/admin");
 	})
 	$(".li-posts").click(() => {
 		console.log("posts clicked");
-		loadingHMTL();
+		$(".right-col-pages").html(`<h1>Loading...</h1>`)
 		createFetch("posts");
 	})
 	$(".li-categories").click(() => {
 		console.log("cats clicked");
-		loadingHMTL();
+		$(".right-col-pages").html(`<h1>Loading...</h1>`)
 		createFetch("cats");
 	})
 	$(".li-users").click(() => {
 		console.log("users clicked");
-		loadingHMTL();
+		$(".right-col-pages").html(`<h1>Loading...</h1>`)
 		createFetch("users");
 	})
 }
