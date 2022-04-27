@@ -86,7 +86,9 @@ export default function router(URI) {
 		'/admin': {
 			returnView: Admin,
 			state: {
-				admin: "/api/users/admin"
+				users: "/api/users/admin",
+				categories: "/api/categories",
+				posts: "/api/posts"
 			},
 			uri: '/admin',
 			title: 'Admin',

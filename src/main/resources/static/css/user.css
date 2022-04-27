@@ -32,6 +32,7 @@ p {
     align-items: center;
     background: #ffffff;
 }
+
 .wave {
     width: .5em;
     height: 10em;
@@ -40,30 +41,39 @@ p {
     animation: wave 1s linear infinite;
     border-radius: 1em;
 }
+
 .wave:nth-child(2) {
     animation-delay: 0.1s;
 }
+
 .wave:nth-child(3) {
     animation-delay: 0.2s;
 }
+
 .wave:nth-child(4) {
     animation-delay: 0.3s;
 }
+
 .wave:nth-child(5) {
     animation-delay: 0.4s;
 }
+
 .wave:nth-child(6) {
     animation-delay: 0.5s;
 }
+
 .wave:nth-child(7) {
     animation-delay: 0.6s;
 }
+
 .wave:nth-child(8) {
     animation-delay: 0.7s;
 }
+
 .wave:nth-child(9) {
     animation-delay: 0.8s;
 }
+
 .wave:nth-child(10) {
     animation-delay: 0.9s;
 }
@@ -159,19 +169,20 @@ p {
 .err-404-links {
     font-size: 1.5em;
     color: black;
-    }
+}
 
 #myButton {
     display: none;
 }
 
 .feedback {
-    background-color : #ffffff;
+    background-color: #ffffff;
     color: rgba(0, 0, 0, 0.62);
     padding: 10px 20px;
     border-radius: 4px;
     border-color: #46b8da;
 }
+
 /*#create-post-blob {*/
 /*    display: none;*/
 /*    position: fixed;*/
@@ -181,11 +192,28 @@ p {
 /*    border-radius: 10px;*/
 /*}*/
 
+.admin-links {
+    font-size: 1.5em;
+}
+
+.admin-links:link, .admin-links:visited, .admin-links:hover, .admin-links:active {
+    color: #152733;
+    text-decoration: none;
+}
+
+.hor-li {
+    display: inline;
+}
+
+.sidebar-sticky {
+    position: sticky;
+    top: 65px;
+}
+
 @media (max-width: 767px) {
     /*#create-post-blob {*/
     /*    display: block;*/
     /*}*/
-
     #myButton {
         display: block;
         position: fixed;
@@ -207,8 +235,8 @@ p {
     }
 
 
-
     .right-col-user-page {
-        position: sticky; top: 65px;
+        position: sticky;
+        top: 65px;
     }
 }

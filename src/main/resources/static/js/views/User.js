@@ -17,7 +17,7 @@ export default function UserInfo(props) {
             <div class="row">
                 <div class="col-md-7 mb-3 user-info-box">
                     <h1>Your Posts (${(props.user.posts).length})</h1>
-                    ${props.user.posts.map(post =>
+                    ${props.user.posts.reverse().map(post =>
 
                             `
 			<div class="form-holder mb-3">

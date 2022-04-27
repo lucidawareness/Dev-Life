@@ -12,30 +12,33 @@ export default function Register(props) {
         <body>
 
         <div class="container">
-            <div class="form-holder my-5">
-                <h1 id="register-page-title">Register</h1>
-                <form>
-                    <div>
-                        <label for="username">Username</label>
-                        <input class="form-control" id="username" name="username" type="text"/><br>
+            <div class="row justify-content-center">
+                <div class="col col-md-6">
+                    <div class="form-holder my-5">
+                        <h1 id="register-page-title">Register</h1>
+                        <form>
+                            <div>
+                                <label for="username">Username</label>
+                                <input class="form-control" id="username" name="username" type="text"/><br>
+                            </div>
+                            <div>
+                                <label for="email" class="email-label">Email</label>
+                                <input class="form-control" id="email" name="email" type="email"><br>
+                            </div>
+                            <div>
+                                <label for="password">Password</label>
+                                <input class="form-control" id="password" name="password" type="password"/>
+                            </div>
+                            <div>
+                                <a href="/login" data-link>Already have an account?</a>
+                            </div>
+                            <div>
+                                <button id="register-btn" class="btn btn-light mt-3" type="button">Register</button>
+                            </div>
+                        </form>
                     </div>
-                    <div>
-                        <label for="email" class="email-label">Email</label>
-                        <input class="form-control" id="email" name="email" type="email"><br>
-                    </div>
-                    <div>
-                        <label for="password">Password</label>
-                        <input class="form-control" id="password" name="password" type="password"/>
-                    </div>
-					<div>
-                        <a href="/login" data-link>Already have an account?</a>
-					</div>
-                    <div>
-                        <button id="register-btn" class="btn btn-light mt-3" type="button">Register</button>
-                    </div>
-                </form>
+                </div>
             </div>
-
         </div>
         </body>
         </html>
