@@ -25,7 +25,7 @@ export default function UserInfo(props) {
            		<p class="post-content post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-${post.id}" contenteditable="true">
-					${post.categories.map(category => ` ${category.name}`)}
+					${post.categories.map(category => ` ${category.name}`).join(", ")}
 				</span>
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>

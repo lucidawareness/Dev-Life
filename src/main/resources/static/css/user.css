@@ -145,6 +145,37 @@ p {
     padding: 0 2em 0 0;
 }
 
+/*Password registration validation*/
+#message {
+    display:none;
+}
+
+#message p {
+}
+
+/* Add a green text color and a checkmark when the requirements are right */
+.valid {
+    color: green;
+}
+
+.valid:before {
+    position: relative;
+    left: -5px;
+    content: "\2714";
+}
+
+/* Add a red text color and an "x" icon when the requirements are wrong */
+.invalid {
+    color: red;
+}
+
+.invalid:before {
+    position: relative;
+    left: -5px;
+    content: "\2717";
+}
+/*End of pass validation*/
+
 .posts-page-title, .user-page-title {
     font-size: 4em;
 }

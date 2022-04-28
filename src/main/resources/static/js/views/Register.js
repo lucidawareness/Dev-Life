@@ -19,26 +19,36 @@ export default function Register(props) {
                         <form>
                             <div>
                                 <label for="username">Username</label>
-                                <input class="form-control" id="username" name="username" type="text"/>
-								<p id="usernameEmptyMessage">Username cannot be empty</p>
+                                <input class="form-control" id="username" name="username" type="text" required/>
+                                <p id="usernameEmptyMessage">Username cannot be empty</p>
                             </div>
                             <div>
                                 <label for="email" class="email-label">Email</label>
-                                <input class="form-control" id="email" name="email" type="email">
-								<p id="emailEmptyMessage">Email cannot be empty</p>
-								<p id="emailInvalidFormatMessage">Please input correct email format</p>
+                                <input class="form-control" id="email" name="email" type="email" required>
+                                <p id="emailEmptyMessage">Email cannot be empty</p>
+                                <p id="emailInvalidFormatMessage">Please input correct email format</p>
                             </div>
                             <div>
                                 <label for="password">Password</label>
-                                <input class="form-control" id="password" name="password" type="password"/>
-								<p id="passwordEmptyMessage">Password cannot be empty</p>
+                                <input class="form-control" id="password" name="password" type="password"
+                                       pattern="(?=.*\d)(?=.*[a-z])(?=.*[A-Z]).{8,}"
+                                       title="Must contain at least one number and one uppercase and lowercase letter, and at least 8 or more characters"
+                                       required/>
+                                <p id="passwordEmptyMessage">Password cannot be empty</p>
+                                <div id="message">
+                                    <p>Password must contain the following:</p>
+                                    <p id="letter" class="invalid">A <b>lowercase</b> letter</p>
+                                    <p id="capital" class="invalid">A <b>capital (uppercase)</b> letter</p>
+                                    <p id="number" class="invalid">A <b>number</b></p>
+                                    <p id="length" class="invalid">Minimum <b>8 characters</b></p>
+                                </div>
                             </div>
                             <div>
                                 <a href="/login" data-link>Already have an account?</a>
                             </div>
                             <div>
-								<p id="emailOrUsernameExists">Username or Email already exists</p>
-                                <button id="register-btn" class="btn btn-light mt-3" type="button">Register</button>
+                                <p id="emailOrUsernameExists">Username or Email already exists</p>
+                                <button id="register-btn" class="btn btn-light mt-3" type="button" disabled>Register</button>
                             </div>
                         </form>
                     </div>
@@ -51,48 +61,70 @@ export default function Register(props) {
 }
 
 export function RegisterEvent() {
-	$("#register-btn").click(function () {
+	registerButtonListener();
+	passwordValidation();
+	inputListeners()
+}
 
-		let username = document.querySelector("#username").value;
-		let email = document.querySelector("#email").value;
-		let password = document.querySelector("#password").value;
+function inputListeners() {
+	let username = document.querySelector("#username");
+	let email = document.querySelector("#email");
 
-		let usernameEmptyMessage = document.getElementById("usernameEmptyMessage")
-		let emailEmptyMessage = document.getElementById("emailEmptyMessage")
-		let emailInvalidFormatMessage = document.getElementById("emailInvalidFormatMessage")
-		let passwordEmptyMessage = document.getElementById("passwordEmptyMessage")
+	let usernameEmptyMessage = document.getElementById("usernameEmptyMessage");
+	let emailEmptyMessage = document.getElementById("emailEmptyMessage");
+	let emailInvalidFormatMessage = document.getElementById("emailInvalidFormatMessage");
+	let button = document.getElementById("register-btn");
 
-		if (username === "") {
+	username.onkeyup = function (){
+		if (username.value === "") {
 			usernameEmptyMessage.style.display = "block";
 			usernameEmptyMessage.style.color = "red";
-			return;
+			button.disabled = true;
+		} else {
+			usernameEmptyMessage.style.display = "none";
+		}
+	}
+
+	email.onkeyup = function (){
+		if (email.value === "") {
+			emailEmptyMessage.style.display = "block";
+			emailEmptyMessage.style.color = "red";
+			button.disabled = true;
+		} else {
+			emailEmptyMessage.style.display = "none";
 		}
 
-		if (email === "") {
+		if (!email.value.includes("@", ".com")) {
+			emailInvalidFormatMessage.style.display = "block";
+			emailInvalidFormatMessage.style.color = "red";
+			button.disabled = true;
+		} else {
+			emailInvalidFormatMessage.style.display = "none";
+		}
+	}
+}
+
+function registerButtonListener() {
+	$("#register-btn").click(function () {
+		let username = $("#username").val();
+		let email = $("#email").val();
+		let password = $("#password").val();
+		let usernameEmptyMessage = document.getElementById("usernameEmptyMessage");
+		let emailEmptyMessage = document.getElementById("emailEmptyMessage");
+
+		if (username === "" || email === "") {
+			usernameEmptyMessage.style.display = "block";
+			usernameEmptyMessage.style.color = "red";
 			emailEmptyMessage.style.display = "block";
 			emailEmptyMessage.style.color = "red";
 			return;
 		}
 
-		if (password === "") {
-			passwordEmptyMessage.style.display = "block";
-			passwordEmptyMessage.style.color = "red";
-			return;
+		const newUser = {
+			username: username,
+			email: email,
+			password: password
 		}
-
-		if (!email.includes("@", ".com")) {
-			emailInvalidFormatMessage.style.display = "block";
-			emailInvalidFormatMessage.style.color = "red";
-			return;
-		}
-
-		let newUser = {
-			username: $("#username").val(),
-			email: $("#email").val(),
-			password: $("#password").val()
-		}
-
-		console.log(newUser);
 
 		let request = {
 			method: "POST",
@@ -113,4 +145,74 @@ export function RegisterEvent() {
 			})
 
 	})
+}
+
+function passwordValidation() {
+
+	let password = document.querySelector("#password");
+	let letter = document.getElementById("letter");
+	let capital = document.getElementById("capital");
+	let number = document.getElementById("number");
+	let length = document.getElementById("length");
+	let button = document.getElementById("register-btn");
+
+// When the user clicks on the password field, show the message box
+	password.onfocus = function () {
+		document.getElementById("message").style.display = "block";
+	}
+
+// When the user clicks outside of the password field, hide the message box
+	password.onblur = function () {
+		document.getElementById("message").style.display = "none";
+	}
+
+// When the user starts to type something inside the password field
+	password.onkeyup = function () {
+		// Validate lowercase letters
+		let lowerCaseLetters = /[a-z]/g;
+		if (password.value.match(lowerCaseLetters)) {
+			letter.classList.remove("invalid");
+			letter.classList.add("valid");
+			button.disabled = false;
+		} else {
+			letter.classList.remove("valid");
+			letter.classList.add("invalid");
+			button.disabled = true;
+		}
+
+		// Validate capital letters
+		let upperCaseLetters = /[A-Z]/g;
+		if (password.value.match(upperCaseLetters)) {
+			capital.classList.remove("invalid");
+			capital.classList.add("valid");
+			button.disabled = false;
+		} else {
+			capital.classList.remove("valid");
+			capital.classList.add("invalid");
+			button.disabled = true;
+		}
+
+		// Validate numbers
+		let numbers = /[0-9]/g;
+		if (password.value.match(numbers)) {
+			number.classList.remove("invalid");
+			number.classList.add("valid");
+			button.disabled = false;
+		} else {
+			number.classList.remove("valid");
+			number.classList.add("invalid");
+			button.disabled = true;
+		}
+
+		// Validate length
+		if (password.value.length >= 8) {
+			length.classList.remove("invalid");
+			length.classList.add("valid");
+			button.disabled = false;
+		} else {
+			length.classList.remove("valid");
+			length.classList.add("invalid");
+			button.disabled = true;
+		}
+	}
 }
