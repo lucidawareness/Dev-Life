@@ -7,6 +7,7 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
@@ -40,17 +41,23 @@ public class PostsController {
     }
 
     @PostMapping
-    private void createPost(@RequestBody Post newPost, OAuth2Authentication auth) {
+    private void createPost(@RequestBody Post newPost, @RequestParam String[] categories, OAuth2Authentication auth) {
         if (auth != null) {
             String email = auth.getName();
             User user = userRepository.findByEmail(email);
             newPost.setAuthor(user);
-            List<Category> categories = new ArrayList<>();
-            Category jsCat = categoryRepository.findCategoryByName("JS");
-            Category javaCat = categoryRepository.findCategoryByName("Java");
-            categories.add(jsCat);
-            categories.add(javaCat);
-            newPost.setCategories(categories);
+
+            List<Category> categoriesList = new ArrayList<>();
+            for (String category : categories) {
+                if (categoryRepository.findCategoryByName(category) == null) {
+                    Category newCategory = new Category(category);
+                    categoryRepository.save(newCategory);
+                    categoriesList.add(categoryRepository.findCategoryByName(category));
+                } else {
+                    categoriesList.add(categoryRepository.findCategoryByName(category));
+                }
+            }
+            newPost.setCategories(categoriesList);
             postRepository.save(newPost);
             emailService.prepareAndSend(newPost, "New Post!", "");
             System.out.println("Post created");
@@ -58,15 +65,27 @@ public class PostsController {
     }
 
     @PutMapping("{id}")
-    private void updatePost(@PathVariable Long id, @RequestBody Post post, OAuth2Authentication auth) {
+    private void updatePost(@PathVariable Long id, @RequestBody Post post, @RequestParam String[] categories, OAuth2Authentication auth) {
         Post originalPost = postRepository.getById(id);
         if (auth != null) {
             User loggedInUser = userRepository.findByEmail(auth.getName());
             System.out.println(loggedInUser.getRole());
 
+            List<Category> categoriesList = new ArrayList<>();
+            for (String category : categories) {
+                if (categoryRepository.findCategoryByName(category) == null) {
+                    Category newCategory = new Category(category);
+                    categoryRepository.save(newCategory);
+                    categoriesList.add(categoryRepository.findCategoryByName(category));
+                } else {
+                    categoriesList.add(categoryRepository.findCategoryByName(category));
+                }
+            }
+
             if (originalPost.getAuthor() == loggedInUser || loggedInUser.getRole().equals(User.Role.ADMIN)) {
                 originalPost.setTitle(post.getTitle());
                 originalPost.setContent(post.getContent());
+                originalPost.setCategories(categoriesList);
                 postRepository.save(originalPost);
             } else {
                 System.out.println("Unauthorized");

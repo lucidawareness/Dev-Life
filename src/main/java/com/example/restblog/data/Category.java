@@ -23,6 +23,10 @@ public class Category {
     private String name;
 
 
+    public Category(String name) {
+        this.name = name;
+    }
+
     @ManyToMany(
             fetch = FetchType.LAZY,
             cascade = {CascadeType.DETACH, CascadeType.REFRESH},

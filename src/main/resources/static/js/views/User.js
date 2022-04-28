@@ -134,7 +134,7 @@ function editPostListener() {
 		console.log("Ready to edit");
 		const title = $(".post-title-" + id).text().trim();
 		const content = $(".post-content-" + id).text().trim();
-		const tagsString = $(".post-tags-span-" + id).text().trim();
+		const tagsString = $(".post-tags-span-" + id).text().trim().toLowerCase();
 
 		const categoryNames = tagsString.split(", ");
 
@@ -152,7 +152,7 @@ function editPostListener() {
 			body: JSON.stringify(editedPost)
 		}
 
-		fetch(("http://localhost:8080/api/posts/" + id), request)
+		fetch((`http://localhost:8080/api/posts/${id}?categories=${categoryNames}`), request)
 			.then(res => {
 				console.log(res.status)
 				createView("/user")

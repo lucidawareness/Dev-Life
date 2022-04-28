@@ -19,7 +19,7 @@ export default function PostIndex(props) {
            		<p class="post-content-${post.id}">${post.content}</p>
            		<div class="post-categories-div">Tags:
            		<span class="post-tags-span-{post.id}">
-					${post.categories.map(category => `${category.name}`)}
+					${post.categories.map(category => `${category.name}`).join(", ")}
 				</span>
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
@@ -216,6 +216,10 @@ function createPostListener() {
 		console.log("Clicked");
 		const title = $("#newPostTitleModal").val();
 		const content = $("#newPostContentModal").val();
+		const categories = $("#newPostCategories").val();
+		categories.toLowerCase();
+		let categoriesArray = categories.split(", ");
+		console.log(categoriesArray)
 		formType = "modal"
 
 		if (!formValidation(title, content, formType)) {
@@ -229,12 +233,16 @@ function createPostListener() {
 		console.log("Ready to add");
 		console.log(newPost);
 
-		createPostFetch(newPost);
+		createPostFetch(newPost, categoriesArray);
 
 	})
 	$("#newPostButton").click(function () {
 		const title = $("#newPostTitle").val();
 		const content = $("#newPostContent").val();
+		const categories = $("#newPostCategories").val();
+		categories.toLowerCase();
+		let categoriesArray = categories.split(", ");
+		console.log(categoriesArray)
 		formType = "inPage"
 
 		if (!formValidation(title, content, formType)) {
@@ -249,18 +257,18 @@ function createPostListener() {
 		console.log("Ready to add");
 		console.log(newPost);
 
-		createPostFetch(newPost);
+		createPostFetch(newPost, categoriesArray);
 	})
 }
 
-function createPostFetch(newPost) {
+function createPostFetch(newPost, categoriesArray) {
 	let request = {
 		method: "POST",
 		headers: getHeaders(),
 		body: JSON.stringify(newPost)
 	}
 
-	fetch("http://localhost:8080/api/posts", request)
+	fetch(`http://localhost:8080/api/posts?categories=${categoriesArray}`, request)
 		.then(res => {
 			console.log(res.status)
 			createView("/posts")
