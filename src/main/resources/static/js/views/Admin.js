@@ -92,21 +92,6 @@ function navLinkListeners() {
 	})
 }
 
-// function populateRightCol(page) {
-// 	if (page === "dash"){
-// 		return populateDash()
-// 	} else if (page === "posts") {
-// 		return populatePosts()
-// 	} else if (page === "cats") {
-// 		return populateCats()
-// 	} else if (page === "users") {
-// 		return populateUsers()
-// 	} else {
-// 		createView("/admin")
-// 	}
-// }
-
-
 //Dynamic fetch takes in page title and routes to proper method call.
 function createFetch(page) {
 	let url;
@@ -130,7 +115,7 @@ function createFetch(page) {
 		.then(data => {
 			if (page === "posts") {
 				populatePosts(data)
-				deletePostListener();
+				postListeners();
 			} else if (page === "cats") {
 				populateCategories(data)
 			} else if (page === "users") {
@@ -155,7 +140,7 @@ function populatePosts(data) {
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<div class="post-categories-div">Tags:
-           		<span class="post-tags-span-{post.id}">
+           		<span class="post-tags-span-${post.id}">
 					${post.categories.map(category => `${category.name}`)}
 				</span>
 				</div>
@@ -171,7 +156,7 @@ function populatePosts(data) {
 }
 
 //Post page delete
-function deletePostListener() {
+function postListeners() {
 	$(".delete-button").click(function () {
 		const id = $(this).data("id")
 		console.log(id);
@@ -191,6 +176,41 @@ function deletePostListener() {
 			.then(res => {
 				console.log(res.status)
 				$(".right-col-pages").html(`<h1>Loading...</h1>`)
+				createFetch("posts")
+			})
+			.catch(error => {
+				console.log(error)
+				createFetch("posts")
+			})
+	})
+
+	$(".edit-button").click(function () {
+		const id = $(this).data("id");
+		console.log(id);
+		console.log("Ready to edit");
+		const title = $(".post-title-" + id).text().trim();
+		const content = $(".post-content-" + id).text().trim();
+		const tagsString = $(".post-tags-span-" + id).text().trim().toLowerCase();
+
+		const categoryNames = tagsString.split(", ");
+
+
+		const editedPost = {
+			id,
+			title,
+			content
+		}
+		console.log(editedPost)
+
+		let request = {
+			method: "PUT",
+			headers: getHeaders(),
+			body: JSON.stringify(editedPost)
+		}
+
+		fetch((`http://localhost:8080/api/posts/${id}?categories=${categoryNames}`), request)
+			.then(res => {
+				console.log(res.status)
 				createFetch("posts")
 			})
 			.catch(error => {
