@@ -34,10 +34,10 @@ export default function Admin(props) {
                         </nav>
                         <div class="container right-col-pages">
                             <h1>Dashboard</h1>
-							<div class="form-holder mb-3">
-								<h3>Post Stats</h3>
-								<p>Number of posts in blog: ${props.posts.length}</p>
-							</div>
+                            <div class="form-holder mb-3">
+                                <h3>Post Stats</h3>
+                                <p>Number of posts in blog: ${props.posts.length}</p>
+                            </div>
                             <div class="form-holder mb-3">
                                 <h3>Category Stats</h3>
                                 <p>Number of categories in blog: ${props.categories.length}</p>
@@ -131,7 +131,7 @@ function populatePosts(data) {
 	console.log(data)
 	//language=HTML
 	$(".right-col-pages").html(`
-		<h1>Posts (${data.length})</h1>
+        <h1>Posts (${data.length})</h1>
         <div id="posts-container" class="col">
             ${data.reverse().map(post =>
 
@@ -140,8 +140,8 @@ function populatePosts(data) {
            		<h3 class="post-title-${post.id}" contenteditable="true">${post.title}</h3> 
            		<p class="post-content-${post.id}" contenteditable="true">${post.content}</p>
            		<div class="post-categories-div">Tags:
-           		<span class="post-tags-span-${post.id}">
-					${post.categories.map(category => `${category.name}`)}
+           		<span contenteditable="true" class="post-tags-span-${post.id}">
+					${post.categories.map(category => `${category.name}`).join(', ')}
 				</span>
 				</div>
            		<p class="post-createdDate">${new Date(post.createdAt).toLocaleTimeString()} ${new Date(post.createdAt).toLocaleDateString()}</p>
@@ -155,7 +155,7 @@ function populatePosts(data) {
 	`)
 }
 
-//Post page delete
+//Post page delete and edit listeners
 function postListeners() {
 	$(".delete-button").click(function () {
 		const id = $(this).data("id")
@@ -224,14 +224,40 @@ function populateCategories(data) {
 	console.log(data)
 	//language=HTML
 	$(".right-col-pages").html(`
-		<h1>Categories</h1>
+        <h1>Categories (${data.length})</h1>
+        <div id="posts-container" class="col">
+            ${data.reverse().map(category =>
+                    `
+			<div class="form-holder mb-3" data-id="${category.id}">
+           		<h3 class="post-title-${category.id}">${category.name}</h3> 
+           		<p class="post-content-${category.id}">Post this category is used in: ${data.length}</p>
+           		<div class="post-categories-div">Posts: ${category.posts.length}
+				</div>
+           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${category.id}">Delete Category</button>
+			</div>
+        `)
+                    .join('')}
+        </div>
 	`)
 }
 
 function populateUsers(data) {
 	console.log(data)
 	$(".right-col-pages").html(`
-		<h1>Users</h1>
+		<h1>Users (${data.length})</h1>
+        <div id="posts-container" class="col">
+            ${data.reverse().map(category =>
+		`
+			<div class="form-holder mb-3" data-id="${category.id}">
+           		<h3 class="post-title-${category.id}">${category.name}</h3> 
+           		<p class="post-content-${category.id}">Post this category is used in: ${data.length}</p>
+           		<div class="post-categories-div">Posts: ${category.posts.length}
+				</div>
+           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${category.id}">Delete Category</button>
+			</div>
+        `)
+		.join('')}
+        </div>
 	`)
 
 
