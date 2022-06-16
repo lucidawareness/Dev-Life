@@ -118,6 +118,7 @@ function createFetch(page) {
 				postListeners();
 			} else if (page === "cats") {
 				populateCategories(data)
+				categoryListeners();
 			} else if (page === "users") {
 				populateUsers(data)
 			}
@@ -160,7 +161,7 @@ function postListeners() {
 	$(".delete-button").click(function () {
 		const id = $(this).data("id")
 		console.log(id);
-		console.log("Ready to delete");
+		console.log("Ready to delete post");
 
 		const postId = {
 			id: id
@@ -239,6 +240,35 @@ function populateCategories(data) {
                     .join('')}
         </div>
 	`)
+}
+
+function categoryListeners() {
+	$(".delete-button").click(function () {
+		const id = $(this).data("id")
+		console.log(id);
+		console.log("Ready to delete category");
+
+		const categoryId = {
+			id: id
+		}
+
+		let request = {
+			method: "DELETE",
+			headers: getHeaders(),
+			body: JSON.stringify(categoryId)
+		}
+
+		fetch(("http://localhost:8080/api/categories/" + id), request)
+			.then(res => {
+				console.log(res.status)
+				$(".right-col-pages").html(`<h1>Loading...</h1>`)
+				createFetch("cats")
+			})
+			.catch(error => {
+				console.log(error)
+				createFetch("cats")
+			})
+	})
 }
 
 function populateUsers(data) {

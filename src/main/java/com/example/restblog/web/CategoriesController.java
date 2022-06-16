@@ -5,6 +5,8 @@ import com.example.restblog.data.CategoriesRepository;
 import com.example.restblog.data.Category;
 import com.example.restblog.data.Post;
 import com.example.restblog.data.User;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
@@ -27,12 +29,22 @@ public class CategoriesController {
     }
 
     @GetMapping
-    List<Category> getAll(){
+    List<Category> getAll() {
         return categoryRepository.findAll();
     }
 
     @GetMapping("/category")
     private Category getPostsByCategory(@RequestParam String categoryName) {
         return categoryRepository.findCategoryByName(categoryName);
+    }
+
+    @DeleteMapping("/{id}")
+    private ResponseEntity<String> deleteCategory(@PathVariable Long id) {
+        if (categoryRepository.existsById(id)) {
+            Category category = categoryRepository.findById(id);
+            categoryRepository.delete(category);
+            return new ResponseEntity<>("Category Deleted!", HttpStatus.OK);
+        }
+        return new ResponseEntity<>("No category found with id:" + id, HttpStatus.NOT_FOUND);
     }
 }
