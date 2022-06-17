@@ -48,7 +48,7 @@ export default function PostIndex(props) {
                                             id="post-categories-validation"></span></label>
                                     <input type="text" class="form-control mb-2" id="newPostCategories"
                                            name="newPostCategories">
-									<p>Ex: "java, js, html"</p>
+									<p>Example: "java, js, html"</p>
 
 
                                     <p id="character-warning-on-submit"></p>

@@ -276,14 +276,14 @@ function populateUsers(data) {
 	$(".right-col-pages").html(`
 		<h1>Users (${data.length})</h1>
         <div id="posts-container" class="col">
-            ${data.reverse().map(category =>
+            ${data.reverse().map(user =>
 		`
-			<div class="form-holder mb-3" data-id="${category.id}">
-           		<h3 class="post-title-${category.id}">${category.name}</h3> 
-           		<p class="post-content-${category.id}">Post this category is used in: ${data.length}</p>
-           		<div class="post-categories-div">Posts: ${category.posts.length}
+			<div class="form-holder mb-3" data-id="${user.id}">
+           		<h3 class="user-username-${user.id}">${user.username}</h3> 
+           		<p class="user-id-${user.id}">User Id: ${user.id} | Email: ${user.email} | Role: ${user.role} | Posts: ${user.posts.length} | Created: ${user.createdAt}</p>
+           		<div class="post-categories-div">Posts: ${user.posts.length}
 				</div>
-           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${category.id}">Delete Category</button>
+           		<button class="delete-button p-1 my-2 btn btn-light" data-id="${user.id}">Deactivate User</button>
 			</div>
         `)
 		.join('')}
