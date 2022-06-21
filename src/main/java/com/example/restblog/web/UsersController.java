@@ -1,7 +1,10 @@
 package com.example.restblog.web;
 
 import com.example.restblog.data.*;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.config.web.servlet.headers.HeadersSecurityMarker;
+import org.springframework.security.core.parameters.P;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.web.bind.annotation.*;
@@ -48,6 +51,24 @@ public class UsersController {
         user.setRole(User.Role.USER);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         userRepository.save(user);
+    }
+
+    @PostMapping("/changeRole/{id}/{role}")
+    private ResponseEntity<String> changeRole(@PathVariable Long id, @PathVariable String role, OAuth2Authentication auth) {
+        User user = userRepository.getById(id);
+        User requestingUser = userRepository.findByEmail(auth.getName());
+        if (requestingUser.getRole() != User.Role.ADMIN || requestingUser.getRole() == User.Role.USER) {
+            return new ResponseEntity<>("NOT ALLOWED MUST BE ADMIN", HttpStatus.UNAUTHORIZED);
+        }
+
+        if (role.equalsIgnoreCase("USER")) {
+            user.setRole(User.Role.USER);
+        }
+        if (role.equalsIgnoreCase("ADMIN")) {
+            user.setRole(User.Role.ADMIN);
+        }
+        userRepository.save(user);
+        return new ResponseEntity<>("USER ROLE NOW" + user.getRole(), HttpStatus.OK);
     }
 
     @PutMapping("{id}")

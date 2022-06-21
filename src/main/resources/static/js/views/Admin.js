@@ -284,11 +284,41 @@ function populateUsers(data) {
            		<div class="post-categories-div">Posts: ${user.posts.length}
 				</div>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${user.id}">Deactivate User</button>
+           		<select name="user-role" id="user-role">
+  					<option value="USER">User</option>
+  					<option value="ADMIN">Admin</option>
+				</select>
+				<button class="change-user-role btn btn-light" data-id="${user.id}">Change user role</button>
+				<p class="warning-p-tag"></p>
 			</div>
         `)
 		.join('')}
         </div>
 	`)
+}
+
+function userListeners() {
+	$(".change-user-role").click(function () {
+		const id = $(this.data("id"));
+		const role = $('#user-role').find(":selected").val();
 
 
+		let request = {
+			method: "POST",
+			headers: getHeaders()
+		}
+
+		fetch(("http://localhost:8080/api/users/" + id + role), request)
+			.then(res => {
+				console.log(res.status)
+				$(".right-col-pages").html(`<h1>Loading...</h1>`)
+				createFetch("cats")
+			})
+			.catch(error => {
+				console.log(error)
+				createFetch("cats")
+			})
+
+
+	})
 }
