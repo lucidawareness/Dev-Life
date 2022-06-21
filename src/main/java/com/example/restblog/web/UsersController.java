@@ -56,19 +56,24 @@ public class UsersController {
     @PostMapping("/changeRole/{id}/{role}")
     private ResponseEntity<String> changeRole(@PathVariable Long id, @PathVariable String role, OAuth2Authentication auth) {
         User user = userRepository.getById(id);
-        User requestingUser = userRepository.findByEmail(auth.getName());
-        if (requestingUser.getRole() != User.Role.ADMIN || requestingUser.getRole() == User.Role.USER) {
-            return new ResponseEntity<>("NOT ALLOWED MUST BE ADMIN", HttpStatus.UNAUTHORIZED);
+        if (auth.isAuthenticated()) {
+            User requestingUser = userRepository.findByEmail(auth.getName());
+            if (requestingUser.getRole() != User.Role.ADMIN || requestingUser.getRole() == User.Role.USER) {
+                return new ResponseEntity<>("NOT ALLOWED MUST BE ADMIN", HttpStatus.UNAUTHORIZED);
+            }
+
+            if (role.equalsIgnoreCase("USER")) {
+                user.setRole(User.Role.USER);
+            }
+            if (role.equalsIgnoreCase("ADMIN")) {
+                user.setRole(User.Role.ADMIN);
+            }
+            userRepository.save(user);
+            return new ResponseEntity<>("USER ROLE NOW" + user.getRole(), HttpStatus.OK);
         }
 
-        if (role.equalsIgnoreCase("USER")) {
-            user.setRole(User.Role.USER);
-        }
-        if (role.equalsIgnoreCase("ADMIN")) {
-            user.setRole(User.Role.ADMIN);
-        }
-        userRepository.save(user);
-        return new ResponseEntity<>("USER ROLE NOW" + user.getRole(), HttpStatus.OK);
+        return new ResponseEntity<>("NOT AUTHORIZED", HttpStatus.UNAUTHORIZED);
+
     }
 
     @PutMapping("{id}")

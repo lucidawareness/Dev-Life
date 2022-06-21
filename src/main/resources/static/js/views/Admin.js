@@ -120,7 +120,8 @@ function createFetch(page) {
 				populateCategories(data)
 				categoryListeners();
 			} else if (page === "users") {
-				populateUsers(data)
+				populateUsers(data);
+				userListeners();
 			}
 		})
 		.catch(error => {
@@ -284,11 +285,11 @@ function populateUsers(data) {
            		<div class="post-categories-div">Posts: ${user.posts.length}
 				</div>
            		<button class="delete-button p-1 my-2 btn btn-light" data-id="${user.id}">Deactivate User</button>
-           		<select name="user-role" id="user-role">
+           		<select name="user-role" class="user-role-${user.id}" id="user-role">
   					<option value="USER">User</option>
   					<option value="ADMIN">Admin</option>
 				</select>
-				<button class="change-user-role btn btn-light" data-id="${user.id}">Change user role</button>
+				<button class="change-user-role btn btn-light" data-id="${user.id}" data-role="${user.role}">Change user role</button>
 				<p class="warning-p-tag"></p>
 			</div>
         `)
@@ -299,24 +300,28 @@ function populateUsers(data) {
 
 function userListeners() {
 	$(".change-user-role").click(function () {
-		const id = $(this.data("id"));
-		const role = $('#user-role').find(":selected").val();
+		const id = $(this).data("id");
+		const role = $('.user-role-' + id).find(":selected").val();
+		const warningPTag = $(".warning-p-tag");
 
+		console.log(id);
+		console.log(role);
 
 		let request = {
 			method: "POST",
 			headers: getHeaders()
 		}
 
-		fetch(("http://localhost:8080/api/users/" + id + role), request)
+		fetch(("http://localhost:8080/api/users/changeRole/" + id + "/" + role), request)
 			.then(res => {
-				console.log(res.status)
+				console.log(res)
 				$(".right-col-pages").html(`<h1>Loading...</h1>`)
-				createFetch("cats")
+				createFetch("users")
 			})
 			.catch(error => {
 				console.log(error)
-				createFetch("cats")
+				warningPTag.css("color", "red");
+				warningPTag.text("Error changing user role")
 			})
 
 
